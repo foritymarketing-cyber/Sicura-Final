@@ -29,7 +29,9 @@
      Kritisch gedämpfte Spring (bounce: 0) statt fixer Cubic-Bezier-Dauer:
      kein Überschwingen, da das Einblenden nicht aus einer Geste mit
      Schwung entsteht (siehe Apple "Designing Fluid Interfaces"). */
-  var intro = document.querySelector('.hero-content') || document.querySelector('.page-hero .container');
+  // Die Start-Hero (.hero--idle) steuert ihre Einblendung selbst über
+  // Cursor/Touch (script.js) und ist daher ausgenommen.
+  var intro = document.querySelector('.hero:not(.hero--idle) .hero-content') || document.querySelector('.page-hero .container');
   if (intro) {
     animate(
       intro,

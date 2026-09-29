@@ -508,7 +508,7 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
 
 /* Wort-Bild-Marke: helle Variante, da der Header dunkel ist.
    Hoehe steuert die Groesse, Breite ergibt sich aus dem Seitenverhaeltnis
-   (962:484). width/height im Markup verhindern Layout-Shift (CLS). */
+   (1200:467). width/height im Markup verhindern Layout-Shift (CLS). */
 .brand-logo {
   display: block;
   height: 52px;
@@ -686,12 +686,7 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
   border-color: var(--color-accent);
 }
 
-/* ---- Liquid-Metal-Hintergrund: fließende, verschwommene Chrom-Flächen ----
-   Reiner CSS-Nachbau (keine WebGL-Shader-Abhängigkeit): drei radiale
-   Verläufe treiben unabhängig voneinander, ein diagonaler Glanzstreifen
-   zieht darüber hinweg. Reduziert sich unter prefers-reduced-motion auf
-   ein statisches Bild. */
-
+/* ---- Hero-Hintergrund: Video mit Abdunkelung (Scrim) ---- */
 .hero-liquid-bg {
   position: absolute;
   inset: 0;
@@ -716,85 +711,39 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
   background: linear-gradient(160deg, rgba(0, 0, 0, 0.88) 0%, rgba(10, 10, 11, 0.62) 55%, rgba(10, 10, 11, 0.85) 100%);
 }
 
-.lm-blob {
-  position: absolute;
-  z-index: 2;
-  border-radius: 50%;
-  filter: blur(60px);
-  mix-blend-mode: screen;
-  opacity: 0.45;
-  will-change: transform;
+/* ---- Hero-Text erst bei Interaktion (nur Startseite, .hero--idle) ----
+   script.js setzt `is-idle-ready` und schaltet `is-active` bei Maus-
+   bewegung, Antippen oder Tastaturfokus ein und nach 3 s ohne
+   Interaktion wieder aus.
+   Ohne JS bleibt der Text regulär sichtbar. Im Ruhezustand ist der Scrim
+   heller, damit das Video selbst zur Geltung kommt. */
+.hero--idle.is-idle-ready .hero-content {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.lm-blob--1 {
-  width: 46vw;
-  height: 46vw;
-  top: -14vw;
-  left: -10vw;
-  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #8f979c 35%, transparent 70%);
-  animation: lm-drift-1 22s ease-in-out infinite;
+.hero--idle.is-idle-ready.is-active .hero-content {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 
-.lm-blob--2 {
-  width: 38vw;
-  height: 38vw;
-  bottom: -16vw;
-  right: -8vw;
-  background: radial-gradient(circle at 60% 40%, #c3c9cb 0%, #52595d 40%, transparent 72%);
-  animation: lm-drift-2 26s ease-in-out infinite;
+.hero--idle.is-idle-ready .hero-scrim {
+  opacity: 0.4;
+  transition: opacity 0.6s ease;
 }
 
-.lm-blob--3 {
-  width: 30vw;
-  height: 30vw;
-  top: 30%;
-  left: 55%;
-  background: radial-gradient(circle at 50% 50%, #9aa79b 0%, #2c3630 45%, transparent 75%);
-  animation: lm-drift-3 19s ease-in-out infinite;
-}
-
-.lm-sheen {
-  /* Neutraler weißer Glanzstreifen (Metall-Reflexion) – bewusst ohne
-     Akzentfarbe, damit Grün wie im Briefing ausschließlich CTAs/Status
-     vorbehalten bleibt und nicht als Deko-Fläche im Hero-Hintergrund
-     auftaucht. */
-  position: absolute;
-  z-index: 2;
-  inset: -20% -60%;
-  background: linear-gradient(75deg, transparent 40%, rgba(255, 255, 255, 0.10) 48%, rgba(255, 255, 255, 0.22) 50%, rgba(255, 255, 255, 0.10) 52%, transparent 60%);
-  animation: lm-sheen-sweep 9s ease-in-out infinite;
-}
-
-@keyframes lm-drift-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(6vw, 8vw) scale(1.12); }
-}
-
-@keyframes lm-drift-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-7vw, -5vw) scale(1.08); }
-}
-
-@keyframes lm-drift-3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-4vw, 6vw) scale(0.9); }
-}
-
-@keyframes lm-sheen-sweep {
-  0%, 100% { transform: translateX(-15%); }
-  50% { transform: translateX(15%); }
+.hero--idle.is-idle-ready.is-active .hero-scrim {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lm-blob,
-  .lm-sheen {
-    animation: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .lm-blob {
-    filter: blur(40px);
+  .hero--idle.is-idle-ready .hero-content,
+  .hero--idle.is-idle-ready .hero-scrim {
+    transform: none;
+    transition-duration: 0.01s;
   }
 }
 

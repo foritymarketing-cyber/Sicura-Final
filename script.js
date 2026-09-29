@@ -63,7 +63,9 @@
     updateHeaderState();
   }
 
-  /* ---- Hero-Video: bei reduzierter Bewegung auf erstem Frame anhalten ---- */
+  /* ---- Hero-Video: bei reduzierter Bewegung als Standbild anhalten ----
+     Die ersten Sekunden zeigen nur das Logo-Intro, daher wird auf ein
+     aussagekräftiges Motiv (Sekunde 5, entspricht dem Poster) gesprungen. */
   var heroVideo = document.querySelector('.hero-video');
 
   if (heroVideo && prefersReducedMotion) {
@@ -71,9 +73,90 @@
       'loadeddata',
       function () {
         heroVideo.pause();
+        heroVideo.currentTime = 5;
       },
       { once: true }
     );
+  }
+
+  /* ---- Hero-Text erst bei Interaktion einblenden ----
+     Desktop: Mausbewegung, Ausblenden nach 3 s ohne Bewegung.
+     Touch: Antippen, Ausblenden nach 3 s ohne Interaktion.
+     Tastatur: bleibt sichtbar, solange ein per Tastatur fokussiertes
+     Element im Hero liegt (:focus-visible), damit Tab-Nutzer die Buttons
+     erreichen. */
+  var idleHero = document.querySelector('.hero--idle');
+  var idleContent = idleHero && idleHero.querySelector('.hero-content');
+
+  if (idleHero && idleContent) {
+    var mouseIdleDelay = 3000;
+    var touchIdleDelay = 3000;
+    var idleTimer = null;
+    var tapRevealed = false;
+
+    var hasKeyboardFocus = function () {
+      try {
+        return !!idleContent.querySelector(':focus-visible');
+      } catch (err) {
+        return false;
+      }
+    };
+
+    var scheduleHide = function (delay) {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () {
+        if (hasKeyboardFocus()) {
+          scheduleHide(delay);
+          return;
+        }
+        idleHero.classList.remove('is-active');
+      }, delay);
+    };
+
+    var showText = function (delay) {
+      idleHero.classList.add('is-active');
+      scheduleHide(delay);
+    };
+
+    window.addEventListener(
+      'pointermove',
+      function (e) {
+        if (e.pointerType === 'mouse') showText(mouseIdleDelay);
+      },
+      { passive: true }
+    );
+
+    // Ein Tippen auf den noch unsichtbaren Text soll ihn nur einblenden,
+    // nicht versehentlich einen der (unsichtbaren) Buttons auslösen.
+    window.addEventListener(
+      'pointerdown',
+      function (e) {
+        var isMouse = e.pointerType === 'mouse';
+        tapRevealed = !isMouse && !idleHero.classList.contains('is-active');
+        showText(isMouse ? mouseIdleDelay : touchIdleDelay);
+      },
+      { passive: true }
+    );
+
+    idleContent.addEventListener(
+      'click',
+      function (e) {
+        if (tapRevealed) {
+          e.preventDefault();
+          tapRevealed = false;
+        }
+      },
+      true
+    );
+
+    idleHero.addEventListener('focusin', function () {
+      if (hasKeyboardFocus()) showText(touchIdleDelay);
+    });
+    window.addEventListener('keydown', function () {
+      showText(touchIdleDelay);
+    });
+
+    idleHero.classList.add('is-idle-ready');
   }
 
   /* ---- Scroll-Reveal ---- */
