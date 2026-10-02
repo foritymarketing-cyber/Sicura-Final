@@ -79,6 +79,23 @@
     );
   }
 
+  /* ---- Kachel-Videos: bei reduzierter Bewegung auf die Explosionsansicht
+     (Sekunde 6) springen und dort anhalten. */
+  if (prefersReducedMotion) {
+    document.querySelectorAll('.card-video').forEach(function (video) {
+      video.removeAttribute('autoplay');
+      video.pause();
+      video.addEventListener(
+        'loadeddata',
+        function () {
+          video.pause();
+          video.currentTime = 6;
+        },
+        { once: true }
+      );
+    });
+  }
+
   /* ---- Hero-Text erst bei Interaktion einblenden ----
      Desktop: Mausbewegung, Ausblenden nach 3 s ohne Bewegung.
      Touch: Antippen, Ausblenden nach 3 s ohne Interaktion.
