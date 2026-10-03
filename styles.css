@@ -971,6 +971,22 @@ a.card {
   opacity: 1;
 }
 
+/* Hover-Video-Kachel: das Video bleibt beim Hover sichtbar und läuft unter
+   einer schwarz-transparenten Textebene ab (Steuerung in script.js). */
+.card--media-video:hover .card-media,
+.card--media-video:focus-visible .card-media {
+  opacity: 1;
+}
+
+.card--media-video:hover .card-media video,
+.card--media-video:focus-visible .card-media video {
+  transform: none;
+}
+
+.card--media-video .card-body {
+  background: rgba(0, 0, 0, 0.6);
+}
+
 /* ---- Icon-Kacheln ohne Foto: gleiche Grundfläche wie Bild-Kacheln, damit
    sie im selben Grid neben `.card--media` nicht wie ein Fremdkörper wirken. */
 .card--tile {

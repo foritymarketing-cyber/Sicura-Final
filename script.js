@@ -82,7 +82,7 @@
   /* ---- Kachel-Videos: bei reduzierter Bewegung auf die Explosionsansicht
      (Sekunde 6) springen und dort anhalten. */
   if (prefersReducedMotion) {
-    document.querySelectorAll('.card-video').forEach(function (video) {
+    document.querySelectorAll('.card-video:not(.card-video--hover)').forEach(function (video) {
       video.removeAttribute('autoplay');
       video.pause();
       video.addEventListener(
@@ -95,6 +95,57 @@
       );
     });
   }
+
+  /* ---- Hover-Video-Kachel: beim Hover vorwärts bis zum Ende abspielen und
+     dort anhalten, beim Verlassen rückwärts zum Anfang zurückspulen.
+     Rückwärts per requestAnimationFrame, da negative playbackRate nicht in
+     allen Browsern unterstützt wird. Bei reduzierter Bewegung bleibt das
+     Standbild stehen, nur der Text wird eingeblendet. */
+  document.querySelectorAll('.card-video--hover').forEach(function (video) {
+    var card = video.closest('.card');
+    if (!card || prefersReducedMotion) return;
+
+    var rewindFrame = null;
+    var lastTs = null;
+
+    var stopRewind = function () {
+      if (rewindFrame) cancelAnimationFrame(rewindFrame);
+      rewindFrame = null;
+      lastTs = null;
+    };
+
+    var rewindStep = function (ts) {
+      if (lastTs !== null) {
+        var t = video.currentTime - (ts - lastTs) / 1000;
+        if (t <= 0) {
+          video.currentTime = 0;
+          stopRewind();
+          return;
+        }
+        video.currentTime = t;
+      }
+      lastTs = ts;
+      rewindFrame = requestAnimationFrame(rewindStep);
+    };
+
+    var playForward = function () {
+      stopRewind();
+      if (video.ended || video.currentTime >= video.duration) return;
+      var p = video.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+
+    var playBackward = function () {
+      video.pause();
+      stopRewind();
+      rewindFrame = requestAnimationFrame(rewindStep);
+    };
+
+    card.addEventListener('mouseenter', playForward);
+    card.addEventListener('mouseleave', playBackward);
+    card.addEventListener('focus', playForward);
+    card.addEventListener('blur', playBackward);
+  });
 
   /* ---- Hero-Text erst bei Interaktion einblenden ----
      Desktop: Mausbewegung, Ausblenden nach 3 s ohne Bewegung.
