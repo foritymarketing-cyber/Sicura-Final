@@ -161,6 +161,7 @@
     var touchIdleDelay = 3000;
     var idleTimer = null;
     var tapRevealed = false;
+    var textAlwaysVisible = window.matchMedia('(max-width: 1024px)');
 
     var hasKeyboardFocus = function () {
       try {
@@ -200,7 +201,11 @@
       'pointerdown',
       function (e) {
         var isMouse = e.pointerType === 'mouse';
-        tapRevealed = !isMouse && !idleHero.classList.contains('is-active');
+        // Unterhalb Desktop-Breite ist der Text immer sichtbar (siehe CSS).
+        tapRevealed =
+          !isMouse &&
+          !idleHero.classList.contains('is-active') &&
+          !textAlwaysVisible.matches;
         showText(isMouse ? mouseIdleDelay : touchIdleDelay);
       },
       { passive: true }
