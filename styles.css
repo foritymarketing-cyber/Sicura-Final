@@ -2106,51 +2106,6 @@ a.card {
   margin-top: var(--space-6);
 }
 
-.reviews {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-7);
-}
-
-.review-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-}
-
-.review-stars {
-  display: flex;
-  gap: 2px;
-  flex-shrink: 0;
-  color: var(--color-text);
-  padding-top: 2px;
-}
-
-.review-stars svg {
-  width: 16px;
-  height: 16px;
-}
-
-.review-item strong {
-  display: block;
-  font-size: var(--fs-body-lg);
-}
-
-.review-item span {
-  display: block;
-  font-size: var(--fs-tiny);
-  color: var(--color-text-faint);
-}
-
-.review-item a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  color: var(--color-text-muted);
-}
-
-.review-item a:hover {
-  color: var(--color-accent);
-}
 
 /* ==========================================================================
    Kontakt
