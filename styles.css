@@ -1987,8 +1987,8 @@ a.card {
   cursor: grab;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  margin-inline: calc(var(--space-6) * -1);
-  padding-inline: var(--space-6);
+  margin-inline: calc(var(--container-padding) * -1);
+  padding-inline: var(--container-padding);
 }
 
 .conveyor::-webkit-scrollbar {
@@ -2006,21 +2006,18 @@ a.card {
 }
 
 .case-card {
-  flex: 0 0 min(340px, 82vw);
+  flex: 0 0 min(440px, 82vw);
+  overflow: hidden;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-6);
   box-shadow: var(--shadow-sm);
 }
 
-.case-card--media {
-  padding: 0;
-  overflow: hidden;
-}
-
+/* Bildfläche; ohne Bild bleibt sie als ruhige Fläche stehen, bis das Foto da ist */
 .case-card-media {
   aspect-ratio: 900 / 418;
+  background: var(--color-surface-raised);
 }
 
 .case-card-media img {
@@ -2028,36 +2025,30 @@ a.card {
   height: 100%;
   object-fit: cover;
   display: block;
+  /* Bild nicht herausziehbar, damit Ziehen nur das Laufband bewegt */
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
 }
 
-.case-card--media .case-card-body {
-  padding: var(--space-6);
+/* Titelzeile mit grünem Punkt wie bei der Eyebrow */
+.case-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--fs-h3);
 }
 
-.case-card .eyebrow {
-  margin-bottom: var(--space-3);
-}
-
-.case-card h3 {
-  margin-bottom: var(--space-4);
-}
-
-.case-field:not(:first-of-type) {
-  margin-top: var(--space-4);
-}
-
-.case-field dt {
-  font-size: var(--fs-tiny);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-faint);
-  margin-bottom: var(--space-1);
-}
-
-.case-field dd {
-  font-size: var(--fs-small);
-  color: var(--color-text-muted);
+.case-card-title::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px 1px rgba(0, 200, 50, 0.6);
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
