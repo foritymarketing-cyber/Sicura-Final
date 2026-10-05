@@ -407,7 +407,7 @@
       if (statusBox) {
         statusBox.className = 'form-status is-visible success';
         statusBox.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Vielen Dank. Wir sehen uns Ihre Nachricht an und melden uns bei Ihnen. Wenn es eilig ist, rufen Sie gerne direkt an: 06249 937 9999.</span>';
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Vielen Dank. Wir sehen uns Ihre Nachricht an und melden uns bei Ihnen. Wenn es eilig ist, rufen Sie gerne direkt an: <a class="phone" href="tel:+4962499379999">06249 937 9999</a>.</span>';
         statusBox.setAttribute('role', 'status');
         statusBox.setAttribute('aria-live', 'polite');
       }

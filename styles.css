@@ -2370,6 +2370,13 @@ a.card {
   font-size: var(--fs-h3);
 }
 
+.legal-content h3 {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-lg);
+}
+
 .legal-content h2:first-child {
   margin-top: 0;
 }
@@ -2500,4 +2507,33 @@ a.card {
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }
+}
+
+/* ==========================================================================
+   Markierschutz: Text nicht markierbar – ausgenommen Formularfelder,
+   Telefonnummern und E-Mail-Adressen
+   ========================================================================== */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+select,
+a[href^="tel:"],
+a[href^="mailto:"],
+.phone {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.phone {
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.phone:hover {
+  color: var(--color-accent);
 }
