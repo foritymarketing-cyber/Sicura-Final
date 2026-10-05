@@ -2083,6 +2083,11 @@ a.card {
   margin-top: var(--space-7);
 }
 
+.rating-link {
+  margin: var(--space-6) 0 0;
+  text-align: center;
+}
+
 .reviews {
   display: flex;
   flex-wrap: wrap;
