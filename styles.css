@@ -1143,13 +1143,15 @@ a.card {
 }
 
 .card--media:hover .card-media,
-.card--media:focus-visible .card-media {
+.card--media:focus-visible .card-media,
+.card--media.is-touch-active .card-media {
   opacity: 0;
   transition-delay: var(--card-text-delay);
 }
 
 .card--media:hover .card-body,
-.card--media:focus-visible .card-body {
+.card--media:focus-visible .card-body,
+.card--media.is-touch-active .card-body {
   background-color: var(--color-bg-deep);
   transition-delay: var(--card-text-delay);
 }
@@ -1159,7 +1161,9 @@ a.card {
 .card--media:hover .card-body p,
 .card--media:hover .card-body .card-link,
 .card--media:focus-visible .card-body p,
-.card--media:focus-visible .card-body .card-link {
+.card--media:focus-visible .card-body .card-link,
+.card--media.is-touch-active .card-body p,
+.card--media.is-touch-active .card-body .card-link {
   opacity: 1;
   transform: none;
   transition-delay: var(--card-text-delay);
@@ -1168,17 +1172,20 @@ a.card {
 /* Hover-Video-Kachel: das Video bleibt beim Hover sichtbar und läuft unter
    einer schwarz-transparenten Textebene ab (Steuerung in script.js). */
 .card--media-video:hover .card-media,
-.card--media-video:focus-visible .card-media {
+.card--media-video:focus-visible .card-media,
+.card--media-video.is-touch-active .card-media {
   opacity: 1;
 }
 
 .card--media-video:hover .card-media video,
-.card--media-video:focus-visible .card-media video {
+.card--media-video:focus-visible .card-media video,
+.card--media-video.is-touch-active .card-media video {
   transform: none;
 }
 
 .card--media-video:hover .card-body,
-.card--media-video:focus-visible .card-body {
+.card--media-video:focus-visible .card-body,
+.card--media-video.is-touch-active .card-body {
   background-color: rgba(0, 0, 0, 0.6);
 }
 

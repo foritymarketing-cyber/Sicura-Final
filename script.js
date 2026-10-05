@@ -145,7 +145,68 @@
     card.addEventListener('mouseleave', playBackward);
     card.addEventListener('focus', playForward);
     card.addEventListener('blur', playBackward);
+    card._hoverVideo = { play: playForward, rewind: playBackward };
   });
+
+  /* ---- Touch: Hover-Video-Kachel beim Darüberwischen mit dem Finger abspielen.
+     Aktiv ist die Kachel unter dem Finger (auch wenn der Finger von einer
+     Kachel auf die nächste wandert); `.is-touch-active` spiegelt den
+     Hover-Zustand im CSS. Nach dem Loslassen bleibt die Kachel noch kurz
+     aktiv, damit das Video zu Ende laufen kann. Listener sind passiv und
+     beeinträchtigen das Scrollen nicht. */
+  if (!prefersReducedMotion && document.querySelector('.card-video--hover')) {
+    var touchCard = null;
+    var touchReleaseTimer = null;
+    var touchFrame = null;
+    var touchPoint = null;
+    var touchReleaseDelay = 2500;
+
+    var setTouchCard = function (card) {
+      if (card === touchCard) return;
+      if (touchCard) {
+        touchCard.classList.remove('is-touch-active');
+        touchCard._hoverVideo.rewind();
+      }
+      touchCard = card;
+      if (card) {
+        card.classList.add('is-touch-active');
+        card._hoverVideo.play();
+      }
+    };
+
+    var cardAtPoint = function (x, y) {
+      var el = document.elementFromPoint(x, y);
+      var card = el && el.closest('.card');
+      return card && card._hoverVideo ? card : null;
+    };
+
+    var updateTouch = function () {
+      touchFrame = null;
+      if (touchPoint) setTouchCard(cardAtPoint(touchPoint.x, touchPoint.y));
+    };
+
+    var onTouch = function (e) {
+      var t = e.touches[0];
+      if (!t) return;
+      clearTimeout(touchReleaseTimer);
+      touchPoint = { x: t.clientX, y: t.clientY };
+      if (!touchFrame) touchFrame = requestAnimationFrame(updateTouch);
+    };
+
+    var onTouchEnd = function (e) {
+      if (e.touches.length) return;
+      touchPoint = null;
+      clearTimeout(touchReleaseTimer);
+      touchReleaseTimer = setTimeout(function () {
+        setTouchCard(null);
+      }, touchReleaseDelay);
+    };
+
+    document.addEventListener('touchstart', onTouch, { passive: true });
+    document.addEventListener('touchmove', onTouch, { passive: true });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
+    document.addEventListener('touchcancel', onTouchEnd, { passive: true });
+  }
 
   /* ---- Hero-Text erst bei Interaktion einblenden ----
      Desktop: Mausbewegung, Ausblenden nach 3 s ohne Bewegung.
