@@ -1774,6 +1774,17 @@ a.card {
   padding-block: var(--space-8);
 }
 
+/* Einspaltige, zentrierte Variante ohne Beschriftung links (Videoüberwachung) */
+.service-stack .service-block {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.service-stack .service-body > h2 + * {
+  margin-top: var(--space-3);
+}
+
 .service-block:not(:last-child) {
   border-bottom: 1px solid var(--color-border);
 }
@@ -1809,13 +1820,19 @@ a.card {
   margin-top: var(--space-6);
 }
 
-.service-sub h4 {
+.service-sub h4,
+.service-sub-title {
   font-size: var(--fs-small);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-faint);
   margin-bottom: var(--space-3);
+}
+
+.service-sub p + .check-list,
+.service-body .lede + .check-list {
+  margin-top: var(--space-4);
 }
 
 .check-list {
@@ -1852,7 +1869,7 @@ a.card {
 
 .step-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-6);
 }
 
