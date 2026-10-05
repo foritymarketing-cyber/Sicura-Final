@@ -1553,6 +1553,100 @@ a.card {
   color: var(--color-text);
 }
 
+/* ---- Partner-Logos (Startseite): Fließband von rechts nach links ----
+   Die Logo-Liste steht im HTML zweimal hintereinander; die Spur läuft um
+   genau eine Hälfte (-50 %) nach links und springt dann nahtlos zurück.
+   Helle Kacheln, da die Original-Logos für weißen Grund gemacht sind –
+   Ajax liefert sein Logo auf Schwarz und bekommt eine dunkle Kachel. */
+.partner-marquee {
+  --partner-gap: var(--space-4);
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+.partner-logos {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) 0;
+  display: flex;
+  gap: var(--partner-gap);
+  width: max-content;
+  animation: partner-marquee 32s linear infinite;
+}
+
+.partner-marquee:hover .partner-logos {
+  animation-play-state: paused;
+}
+
+@keyframes partner-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* halbe Spur plus halber Abstand, damit der Übergang exakt sitzt */
+    transform: translateX(calc(-50% - var(--partner-gap) / 2));
+  }
+}
+
+.partner-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 240px;
+  height: 120px;
+  padding: var(--space-4) var(--space-5);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.partner-logo--dark {
+  background: #000000;
+}
+
+.partner-logo img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 84px;
+  object-fit: contain;
+}
+
+@media (max-width: 620px) {
+  .partner-logo {
+    width: 180px;
+    height: 96px;
+    padding: var(--space-3);
+  }
+
+  .partner-logo img {
+    max-height: 64px;
+  }
+}
+
+/* Reduzierte Bewegung: kein Lauf, Logos einfach umbrechend zentriert */
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .partner-logos {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .partner-logo[aria-hidden="true"] {
+    display: none;
+  }
+}
+
 /* ==========================================================================
    CTA-Banner
    ========================================================================== */
