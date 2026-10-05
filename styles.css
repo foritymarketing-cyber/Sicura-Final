@@ -2083,9 +2083,12 @@ a.card {
   margin-top: var(--space-7);
 }
 
-.rating-link {
-  margin: var(--space-6) 0 0;
-  text-align: center;
+.rating-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
 }
 
 .reviews {
