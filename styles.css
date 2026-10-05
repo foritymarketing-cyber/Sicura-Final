@@ -1098,13 +1098,37 @@ a.card {
   transform: scale(1.06);
 }
 
+/* Textebene: Überschrift ist immer sichtbar (über einem dunklen Verlauf am
+   oberen Rand), Beschreibung und Link blenden erst beim Hover/Fokus ein. */
 .card-body {
   position: relative;
   height: 100%;
   padding: var(--space-6);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 45%);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.card--media .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card--media .card-body h3 {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Beschreibung und Link sitzen am unteren Kachelrand, die Überschrift oben. */
+.card--media .card-body p {
+  margin-top: auto;
+}
+
+.card--media .card-body p,
+.card--media .card-body .card-link {
   opacity: 0;
-  background: var(--color-bg-deep);
-  transition: opacity var(--duration-base) var(--ease-out);
+  transform: translateY(8px);
+  transition: opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
 }
 
 .card--media:hover .card-media,
@@ -1114,7 +1138,15 @@ a.card {
 
 .card--media:hover .card-body,
 .card--media:focus-visible .card-body {
+  background-color: var(--color-bg-deep);
+}
+
+.card--media:hover .card-body p,
+.card--media:hover .card-body .card-link,
+.card--media:focus-visible .card-body p,
+.card--media:focus-visible .card-body .card-link {
   opacity: 1;
+  transform: none;
 }
 
 /* Hover-Video-Kachel: das Video bleibt beim Hover sichtbar und läuft unter
@@ -1129,8 +1161,9 @@ a.card {
   transform: none;
 }
 
-.card--media-video .card-body {
-  background: rgba(0, 0, 0, 0.6);
+.card--media-video:hover .card-body,
+.card--media-video:focus-visible .card-body {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 /* ---- Icon-Kacheln ohne Foto: gleiche Grundfläche wie Bild-Kacheln, damit
