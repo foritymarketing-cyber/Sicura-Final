@@ -689,7 +689,7 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
   justify-content: space-between;
   gap: var(--space-6);
   width: 100%;
-  max-width: 1080px;
+  max-width: 960px;
   margin-inline: auto;
   text-align: left;
 }
@@ -814,8 +814,27 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
     display: none;
   }
 
-  .hero--idle .container {
-    padding-top: var(--space-8);
+  /* Headline über das Video ziehen: Wrapper auflösen, damit H1, Video
+     und Text/CTAs direkte Flex-Kinder des Heros werden und per `order`
+     sortiert werden können. Reihenfolge im HTML bleibt unverändert. */
+  .hero--idle .container,
+  .hero--idle .hero-content {
+    display: contents;
+  }
+
+  .hero--idle h1 {
+    order: 1;
+    width: 100%;
+    padding: var(--space-6) var(--container-padding);
+  }
+
+  .hero--idle .hero-liquid-bg {
+    order: 2;
+  }
+
+  .hero--idle .hero-bottom {
+    order: 3;
+    padding: var(--space-8) var(--container-padding) 0;
   }
 
   .hero.hero--idle.is-idle-ready .hero-content {
