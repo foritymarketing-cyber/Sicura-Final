@@ -1040,6 +1040,7 @@ a.card {
    Großes Foto, beim Hover/Fokus zoomt es leicht und blendet zu einer
    dunklen Textebene über — analog Ajax' erste Bildreihe. */
 .card--media {
+  --card-text-delay: 1s;
   position: relative;
   overflow: hidden;
   padding: 0;
@@ -1134,19 +1135,24 @@ a.card {
 .card--media:hover .card-media,
 .card--media:focus-visible .card-media {
   opacity: 0;
+  transition-delay: var(--card-text-delay);
 }
 
 .card--media:hover .card-body,
 .card--media:focus-visible .card-body {
   background-color: var(--color-bg-deep);
+  transition-delay: var(--card-text-delay);
 }
 
+/* Beim Hover erst das Video zeigen, Text und Abdunklung folgen nach 1 s.
+   Beim Verlassen verschwindet der Text sofort (Delay nur im Hover-Zustand). */
 .card--media:hover .card-body p,
 .card--media:hover .card-body .card-link,
 .card--media:focus-visible .card-body p,
 .card--media:focus-visible .card-body .card-link {
   opacity: 1;
   transform: none;
+  transition-delay: var(--card-text-delay);
 }
 
 /* Hover-Video-Kachel: das Video bleibt beim Hover sichtbar und läuft unter
@@ -1327,8 +1333,8 @@ a.card {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--color-text);
+  background: rgba(0, 200, 50, 0.1);
+  color: var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1353,6 +1359,148 @@ a.card {
 @media (max-width: 720px) {
   .benefits {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Ablauf — Zeitstrahl mit scroll-gekoppelter Verbindungslinie
+   Ohne JS (bzw. bei reduzierter Bewegung) ist die Linie voll gefüllt und alle
+   Punkte sind aktiv. script.js setzt `.is-animated`, misst die Linie zwischen
+   erstem und letztem Punkt aus und steuert Füllstand (--process-progress)
+   sowie `.is-active` der Punkte.
+   ========================================================================== */
+
+.process {
+  --process-dot: 48px;
+  --process-progress: 1;
+  position: relative;
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+.process-line {
+  position: absolute;
+  top: calc(var(--process-dot) / 2);
+  bottom: calc(var(--process-dot) / 2);
+  left: calc(var(--process-dot) / 2);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-border-strong);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.process-line-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px rgba(0, 200, 50, 0.6);
+  transform-origin: top;
+  transform: scaleY(var(--process-progress));
+}
+
+.process-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-7);
+}
+
+.process-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--process-dot) 1fr;
+  column-gap: var(--space-5);
+  align-items: start;
+}
+
+.process-dot {
+  position: relative;
+  z-index: 1;
+  width: var(--process-dot);
+  height: var(--process-dot);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-strong);
+  color: var(--color-text-faint);
+  transition: background-color var(--duration-slow) var(--ease-out),
+    border-color var(--duration-slow) var(--ease-out), color var(--duration-slow) var(--ease-out),
+    box-shadow var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+
+.process:not(.is-animated) .process-dot,
+.process-step.is-active .process-dot {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  box-shadow: 0 0 0 6px rgba(0, 200, 50, 0.15), 0 0 20px rgba(0, 200, 50, 0.45);
+}
+
+.process-step.is-active .process-dot {
+  transform: scale(1.06);
+}
+
+.process-content {
+  padding-top: 10px;
+}
+
+.process-content h3 {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-2);
+}
+
+.process-content p {
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+}
+
+/* Desktop: Linie mittig, Schritte abwechselnd links und rechts */
+@media (min-width: 900px) {
+  .process-line {
+    left: 50%;
+  }
+
+  .process-steps {
+    gap: var(--space-5);
+  }
+
+  .process-step {
+    grid-template-columns: 1fr var(--process-dot) 1fr;
+    column-gap: var(--space-7);
+  }
+
+  .process-dot {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .process-step:nth-child(odd) .process-content {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: right;
+  }
+
+  .process-step:nth-child(odd) .process-content p {
+    margin-left: auto;
+  }
+
+  .process-step:nth-child(even) .process-content {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-dot {
+    transition: none;
   }
 }
 

@@ -269,6 +269,53 @@
     }
   }
 
+  /* ---- Ablauf-Zeitstrahl: Linie füllt sich mit dem Scrollen ----
+     Bezugspunkt ist eine Linie bei 60 % der Fensterhöhe: Was darüber liegt,
+     gilt als erreicht. Ohne JS / bei reduzierter Bewegung bleibt alles voll. */
+  var processEls = document.querySelectorAll('[data-process]');
+
+  if (processEls.length && !prefersReducedMotion) {
+    processEls.forEach(function (process) {
+      var line = process.querySelector('.process-line');
+      var steps = Array.prototype.slice.call(process.querySelectorAll('.process-step'));
+      var dots = steps.map(function (step) { return step.querySelector('.process-dot'); });
+      var ticking = false;
+
+      if (!line || !dots.length) return;
+
+      function dotCenter(dot) {
+        var r = dot.getBoundingClientRect();
+        return r.top + r.height / 2;
+      }
+
+      function update() {
+        ticking = false;
+        var anchor = window.innerHeight * 0.6;
+        var first = dotCenter(dots[0]);
+        var last = dotCenter(dots[dots.length - 1]);
+        var progress = last > first ? (anchor - first) / (last - first) : 1;
+        progress = Math.min(1, Math.max(0, progress));
+        process.style.setProperty('--process-progress', progress.toFixed(4));
+
+        dots.forEach(function (dot, i) {
+          steps[i].classList.toggle('is-active', dotCenter(dot) <= anchor);
+        });
+      }
+
+      function requestUpdate() {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(update);
+        }
+      }
+
+      process.classList.add('is-animated');
+      update();
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+    });
+  }
+
   /* ---- Kontaktformular: Client-seitige Validierung ---- */
   var form = document.querySelector('#contact-form');
 
