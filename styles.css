@@ -1090,6 +1090,21 @@ a.card {
   object-position: 50% 42%;
 }
 
+/* Service-Kachel: beim Hover fährt die Kamera auf das Sicura-Logo auf dem
+   Rücken der Technikerin. object-position legt den Logo-Mittelpunkt im Foto
+   (71,5 % / 56,6 %) auf denselben Punkt der Kachel – unabhängig vom
+   Seitenverhältnis. Der Translate-Wert schiebt diesen Punkt dann in die Mitte. */
+.card--media-zoom-logo .card-media img {
+  object-position: 71.5% 56.6%;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.card--media-zoom-logo:hover .card-media img,
+.card--media-zoom-logo:focus-visible .card-media img,
+.card--media-zoom-logo.is-touch-active .card-media img {
+  transform: scale(2.6) translate(-21.5%, -6.6%);
+}
+
 /* Video-Kachel: freigestelltes Produktvideo auf Schwarz. `contain`, damit die
    Explosionsansicht nicht beschnitten wird — der Rand verschmilzt mit Schwarz. */
 .card--media-video .card-media {
@@ -1186,6 +1201,19 @@ a.card {
 .card--media-video:hover .card-body,
 .card--media-video:focus-visible .card-body,
 .card--media-video.is-touch-active .card-body {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Service-Kachel: Foto bleibt nach dem Zoom unter der Textebene sichtbar */
+.card--media-zoom-logo:hover .card-media,
+.card--media-zoom-logo:focus-visible .card-media,
+.card--media-zoom-logo.is-touch-active .card-media {
+  opacity: 1;
+}
+
+.card--media-zoom-logo:hover .card-body,
+.card--media-zoom-logo:focus-visible .card-body,
+.card--media-zoom-logo.is-touch-active .card-body {
   background-color: rgba(0, 0, 0, 0.6);
 }
 

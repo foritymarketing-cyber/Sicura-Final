@@ -148,6 +148,12 @@
     card._hoverVideo = { play: playForward, rewind: playBackward };
   });
 
+  /* Service-Kachel (Logo-Zoom) hat kein Video, soll aber beim Darüberwischen
+     genauso aktiv werden – der Zoom selbst läuft rein über CSS. */
+  document.querySelectorAll('.card--media-zoom-logo').forEach(function (card) {
+    card._hoverVideo = { play: function () {}, rewind: function () {} };
+  });
+
   /* ---- Touch: Hover-Video-Kachel beim Darüberwischen mit dem Finger abspielen.
      Aktiv ist die Kachel unter dem Finger (auch wenn der Finger von einer
      Kachel auf die nächste wandert); `.is-touch-active` spiegelt den
