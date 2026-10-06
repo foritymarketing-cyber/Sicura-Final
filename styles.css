@@ -2512,3 +2512,181 @@ a[href^="mailto:"],
 .phone:hover {
   color: var(--color-accent);
 }
+
+/* ==========================================================================
+   Verdeckte Videoüberwachung (Unterseite): Hero-Kachel mit Bild rechts,
+   Feature-Kacheln mit Icon und Hinweis-Kachel – alles als abgerundete,
+   dunkle Flächen im Stil der übrigen Cards.
+   ========================================================================== */
+
+.covert {
+  padding-top: clamp(24px, 3vw, 48px);
+}
+
+.covert-stack {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.covert-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.covert-hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(28px, 4vw, 56px);
+}
+
+.covert-hero h1 {
+  margin-top: var(--space-4);
+  font-size: clamp(1.75rem, 1.3rem + 1.8vw, 3rem);
+  overflow-wrap: break-word;
+  font-family: var(--font-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.covert-hero-lead {
+  margin-top: var(--space-5);
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.covert-hero-text {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.covert-hero .btn {
+  margin-top: var(--space-6);
+}
+
+.covert-hero-media {
+  position: relative;
+  min-height: 280px;
+}
+
+.covert-hero-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+}
+
+.covert-features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.covert-feature,
+.covert-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.covert-feature {
+  flex-direction: column;
+}
+
+.covert-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  color: var(--color-accent);
+}
+
+.covert-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.covert-feature-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-lg);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.covert-feature p,
+.covert-note p {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.covert-note p {
+  max-width: 80ch;
+}
+
+/* Variante mit zwei Kacheln: Icon links neben dem Text */
+.covert-features--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.covert-features--2 .covert-feature {
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 980px) {
+  .covert-features {
+    grid-template-columns: 1fr;
+  }
+
+  .covert-feature {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 860px) {
+  .covert-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .covert-hero-media {
+    order: -1;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 480px) {
+  .covert-hero-body {
+    padding: var(--space-5);
+  }
+
+  .covert-feature,
+  .covert-features--2 .covert-feature,
+  .covert-note {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+}
