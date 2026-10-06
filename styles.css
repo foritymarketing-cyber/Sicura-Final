@@ -1494,9 +1494,9 @@ a.card {
   background: var(--color-bg);
   border: 2px solid var(--color-border-strong);
   color: var(--color-text-faint);
-  transition: background-color var(--duration-slow) var(--ease-out),
-    border-color var(--duration-slow) var(--ease-out), color var(--duration-slow) var(--ease-out),
-    box-shadow var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
 }
 
 .process:not(.is-animated) .process-dot,
@@ -1504,7 +1504,6 @@ a.card {
   background: var(--color-accent);
   border-color: var(--color-accent);
   color: var(--color-accent-contrast);
-  box-shadow: 0 0 0 6px rgba(0, 200, 50, 0.15), 0 0 20px rgba(0, 200, 50, 0.45);
 }
 
 .process-step.is-active .process-dot {

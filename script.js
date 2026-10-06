@@ -360,12 +360,21 @@
         var anchor = window.innerHeight * 0.6;
         var first = dotCenter(dots[0]);
         var last = dotCenter(dots[dots.length - 1]);
+
+        // Linie exakt von der Mitte des ersten bis zur Mitte des letzten
+        // Punkts spannen, damit Füllstand und Punkte deckungsgleich sind.
+        var processTop = process.getBoundingClientRect().top;
+        line.style.top = (first - processTop) + 'px';
+        line.style.height = Math.max(0, last - first) + 'px';
+        line.style.bottom = 'auto';
+
         var progress = last > first ? (anchor - first) / (last - first) : 1;
         progress = Math.min(1, Math.max(0, progress));
         process.style.setProperty('--process-progress', progress.toFixed(4));
 
+        // Ein Punkt wird grün, sobald die Füllung seinen oberen Rand erreicht.
         dots.forEach(function (dot, i) {
-          steps[i].classList.toggle('is-active', dotCenter(dot) <= anchor);
+          steps[i].classList.toggle('is-active', i === 0 ? anchor >= first : dot.getBoundingClientRect().top <= anchor);
         });
       }
 
