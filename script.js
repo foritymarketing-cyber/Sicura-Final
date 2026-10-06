@@ -29,7 +29,7 @@
     });
 
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 860) {
+      if (window.innerWidth > 1024) {
         navToggle.setAttribute('aria-expanded', 'false');
         navDesktop.classList.remove('is-open');
         document.body.style.overflow = '';

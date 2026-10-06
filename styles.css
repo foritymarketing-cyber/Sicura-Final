@@ -540,6 +540,7 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
 
 .nav-links a {
   position: relative;
+  white-space: nowrap;
   font-weight: 500;
   font-size: var(--fs-small);
   color: rgba(255, 255, 255, 0.68);
@@ -565,6 +566,22 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
   border-radius: var(--radius-full);
   background: var(--color-accent);
   box-shadow: 0 0 6px 0 rgba(0, 200, 50, 0.6);
+}
+
+.nav-cta {
+  white-space: nowrap;
+}
+
+/* Sieben Menüpunkte: zwischen Tablet und großem Desktop Abstände
+   verringern, damit Logo, Links und CTA in eine Zeile passen. */
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .nav-desktop {
+    gap: var(--space-5);
+  }
+
+  .nav-links {
+    gap: var(--space-4);
+  }
 }
 
 .nav-toggle {
@@ -594,7 +611,9 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
   display: block;
 }
 
-@media (max-width: 860px) {
+/* Burger-Menü bis 1024px: Ab sieben Menüpunkten reicht die Breite darunter
+   nicht mehr für Logo, Links und CTA in einer Zeile. */
+@media (max-width: 1024px) {
   .nav-desktop {
     position: fixed;
     inset: 84px 0 0 0;
@@ -2813,5 +2832,171 @@ a[href^="mailto:"],
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-3);
+  }
+}
+
+/* ==========================================================================
+   Ratgeber-Seite: vier Teaser-Karten (Bild, Kategorie, Titel, Kurztext,
+   „Beitrag lesen“) springen zu den Beiträgen weiter unten auf der Seite.
+   Kopfbereich nutzt .qa-hero.
+   ========================================================================== */
+
+.rg-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.rg-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: transform var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out);
+}
+
+.rg-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 200, 50, 0.35);
+}
+
+.rg-card-media {
+  aspect-ratio: 7 / 5;
+  overflow: hidden;
+}
+
+.rg-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.rg-card:hover .rg-card-media img {
+  transform: scale(1.04);
+}
+
+.rg-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  padding: var(--space-5);
+}
+
+.rg-card-title {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.rg-card-text {
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.rg-card-btn {
+  margin-top: auto;
+  padding: 10px 24px;
+  border: 1.5px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  color: var(--color-accent);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.rg-card-text {
+  margin-bottom: var(--space-5);
+}
+
+.rg-card:hover .rg-card-btn {
+  background: var(--color-accent-soft);
+}
+
+.rg-articles {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.rg-article {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  scroll-margin-top: 104px;
+}
+
+.rg-article-media {
+  position: relative;
+  min-height: 240px;
+}
+
+.rg-article-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+}
+
+.rg-article-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(28px, 4vw, 48px);
+}
+
+.rg-article-title {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+}
+
+.rg-article-text {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.rg-article-text p {
+  color: var(--color-text-muted);
+}
+
+.rg-article .btn {
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 1024px) {
+  .rg-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .rg-article {
+    grid-template-columns: 1fr;
+  }
+
+  .rg-article-media {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 560px) {
+  .rg-grid {
+    grid-template-columns: 1fr;
   }
 }
