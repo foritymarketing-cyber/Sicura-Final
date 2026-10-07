@@ -1325,6 +1325,10 @@ a.card {
     var(--solution-photo);
   background-size: cover;
   background-position: center;
+  /* Bild bis unter den 1px-Rahmen ziehen und nicht kacheln, sonst blitzt
+     unten die helle Oberkante des wiederholten Fotos als Streifen auf. */
+  background-origin: border-box;
+  background-repeat: no-repeat;
 }
 
 .solution-card:hover,
