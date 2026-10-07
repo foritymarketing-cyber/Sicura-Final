@@ -2840,6 +2840,49 @@ a[href^="mailto:"],
    Kopfbereich nutzt .qa-hero.
    ========================================================================== */
 
+/* Kopfbereich und Teaser-Karten liegen gemeinsam auf einem stark
+   abgedunkelten, unscharfen Foto, das nach unten in den Seitenhintergrund
+   ausläuft. */
+.rg-top {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.rg-top::before,
+.rg-top::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.rg-top::before {
+  background: url('assets/Medien/ratgeber-hero-hintergrund.jpg') center 30% / cover no-repeat;
+  opacity: 0.5;
+}
+
+.rg-top::after {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(10, 10, 11, 0.35), rgba(10, 10, 11, 0.85)),
+    linear-gradient(to bottom, rgba(10, 10, 11, 0.55) 0%, rgba(10, 10, 11, 0.85) 55%, var(--color-bg) 100%);
+}
+
+.rg-hero h1 {
+  font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.25rem);
+  font-weight: 700;
+}
+
+.rg-hero .lede {
+  max-width: 72ch;
+  color: #d4d6dc;
+}
+
+.rg-teaser {
+  padding-top: 0;
+}
+
 .rg-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2849,7 +2892,8 @@ a[href^="mailto:"],
 .rg-card {
   display: flex;
   flex-direction: column;
-  background: var(--color-surface);
+  background: rgba(16, 16, 18, 0.92);
+  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.8);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
@@ -2975,6 +3019,22 @@ a[href^="mailto:"],
 
 .rg-article .btn {
   margin-top: var(--space-6);
+}
+
+/* Auf Desktop ist der Bildrahmen hochkant und schneidet die Querformat-Fotos
+   seitlich ab: Ausschnitt je Beitrag auf das Hauptmotiv legen. */
+@media (min-width: 761px) {
+  #alarmanlagen .rg-article-media img {
+    object-position: 31% 50%;
+  }
+
+  #kurzeinsaetze .rg-article-media img {
+    object-position: 8% 50%;
+  }
+
+  #verdeckte-videoueberwachung .rg-article-media img {
+    object-position: 68% 50%;
+  }
 }
 
 @media (max-width: 1024px) {
