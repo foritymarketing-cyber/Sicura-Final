@@ -398,6 +398,16 @@
   if (form) {
     var statusBox = form.querySelector('.form-status');
 
+    // Anliegen aus ?anliegen=… vorauswählen (CTAs der Leistungsseiten).
+    // Nur Werte übernehmen, die als Option existieren.
+    var topicSelect = form.elements.topic;
+    var topicParam = new URLSearchParams(window.location.search).get('anliegen');
+    if (topicSelect && topicParam) {
+      Array.prototype.forEach.call(topicSelect.options, function (option) {
+        if (option.value && option.value === topicParam) topicSelect.value = topicParam;
+      });
+    }
+
     var validators = {
       name: function (value) {
         return value.trim().length >= 2 ? '' : 'Bitte tragen Sie Ihren Namen ein.';

@@ -114,6 +114,20 @@
             </div>
 
             <div class="form-row">
+              <label for="topic">Ihr Anliegen <span class="optional">(optional)</span></label>
+              <select id="topic" name="topic">
+                <option value="" selected>Bitte auswählen</option>
+                <option value="videoueberwachung">Videoüberwachung</option>
+                <option value="verdeckte-videoueberwachung">Verdeckte Videoüberwachung</option>
+                <option value="einbruchmeldeanlage">Einbruchmeldeanlage / Alarmtechnik</option>
+                <option value="kurzeinsatz">Kurzeinsatz / Technik mieten (z. B. Events, akute Gefahrenlage)</option>
+                <option value="service-wartung">Service und Wartung einer bestehenden Anlage</option>
+                <option value="beratung">Allgemeine Beratung – ich weiß noch nicht, was ich brauche</option>
+                <option value="sonstiges">Sonstiges</option>
+              </select>
+            </div>
+
+            <div class="form-row">
               <label for="message">Nachricht</label>
               <textarea id="message" name="message" required></textarea>
               <p class="field-error" role="alert"></p>
