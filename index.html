@@ -42,12 +42,13 @@
   <main id="main">
     <!-- Hero -->
     <section class="hero hero--idle">
-      <div class="hero-liquid-bg" aria-hidden="true">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/Medien/hero-poster.jpg">
+      <div class="hero-liquid-bg">
+        <video class="hero-video" aria-hidden="true" autoplay muted loop playsinline preload="auto" poster="assets/Medien/hero-poster.jpg">
           <source src="assets/Medien/hero-video-720.mp4" type="video/mp4" media="(max-width: 900px)">
           <source src="assets/Medien/hero-video.mp4" type="video/mp4">
         </video>
-        <span class="hero-scrim"></span>
+        <span class="hero-scrim" aria-hidden="true"></span>
+        <span class="ki-label">KI-generiert</span>
       </div>
       <div class="container">
         <div class="hero-content">
@@ -77,6 +78,7 @@
               <video class="card-video card-video--hover" muted playsinline preload="metadata" poster="assets/Medien/leistungen-videoueberwachung-hover-poster.jpg?v=2" width="1280" height="720" aria-hidden="true">
                 <source src="assets/Medien/leistungen-videoueberwachung-hover.mp4?v=2" type="video/mp4">
               </video>
+              <span class="ki-label">KI-generiert</span>
             </div>
             <div class="card-body">
               <h3>Videoüberwachung</h3>
@@ -101,6 +103,7 @@
               <video class="card-video card-video--hover" muted playsinline preload="metadata" poster="assets/Medien/leistungen-einbruchmeldeanlagen-hover-poster.jpg" width="1280" height="720" aria-hidden="true">
                 <source src="assets/Medien/leistungen-einbruchmeldeanlagen-hover.mp4" type="video/mp4">
               </video>
+              <span class="ki-label">KI-generiert</span>
             </div>
             <div class="card-body">
               <h3>Einbruchmeldeanlagen</h3>
@@ -215,6 +218,7 @@
 
         <div class="solution-grid" data-reveal-group>
           <a class="solution-card solution-card--photo" href="leistungen.html" style="--solution-photo:url('assets/Medien/solution-kamera-fassade.png')" data-reveal>
+            <span class="ki-label">KI-generiert</span>
             <p class="solution-index">Für Privat &amp; Gewerbe</p>
             <h3>Passende Lösung finden</h3>
             <p>Videoüberwachung, Einbruchmeldeanlagen oder beides kombiniert – wir zeigen Ihnen, was zu Ihrem Objekt passt.</p>

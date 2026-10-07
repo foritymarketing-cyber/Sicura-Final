@@ -3059,3 +3059,38 @@ a[href^="mailto:"],
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Kennzeichnung KI-generierter Bilder und Videos: kleines Badge unten rechts
+   im jeweiligen Medien-Container (Container muss positioniert sein).
+   ========================================================================== */
+
+.rg-card-media,
+.rg-hero,
+.case-card-media {
+  position: relative;
+}
+
+.ki-label,
+.solution-card > .ki-label {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.hero-liquid-bg > .ki-label {
+  right: 16px;
+  bottom: 16px;
+}
