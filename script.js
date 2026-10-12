@@ -458,6 +458,219 @@
       });
     });
 
+    /* ---- Puzzle-Captcha ----
+       Ein Puzzleteil wird an einer zufälligen Stelle aus dem Bild „ausgeschnitten“
+       und muss per Schieberegler in die Lücke geschoben werden. Gezeichnet wird
+       auf Canvas in festen internen Koordinaten (W × H), die per CSS skaliert
+       werden. Hinweis: Die Prüfung läuft nur im Browser und hält einfache Bots
+       ab; sobald ein Backend existiert, muss sie zusätzlich serverseitig erfolgen. */
+    var captcha = (function () {
+      var root = form.querySelector('[data-captcha]');
+      if (!root) return null;
+
+      var W = 360, H = 240;          // interne Bildgröße
+      var L = 44, R = 9;             // Kantenlänge und Nasenradius des Teils
+      var PW = L + 2 * R + 4;        // Canvas-Größe des Teils
+      var OX = 2, OY = 2 * R + 2;    // Lage des Quadrats im Teil-Canvas
+      var MIN_X = 4, MAX_X = W - L - R - 8;
+      var TOLERANCE = 5;
+
+      var bg = root.querySelector('.puzzle-captcha-bg');
+      var piece = root.querySelector('.puzzle-captcha-piece');
+      var track = root.querySelector('.puzzle-captcha-track');
+      var fill = root.querySelector('.puzzle-captcha-fill');
+      var handle = root.querySelector('.puzzle-captcha-handle');
+      var refresh = root.querySelector('.puzzle-captcha-refresh');
+      var input = form.elements.captcha;
+      var status = root.querySelector('.puzzle-captcha-status');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      var image = new Image();
+      var imageReady = false;
+      var target = { x: 0, y: 0 };
+      var fraction = 0;
+      var solved = false;
+      var busy = false;
+      var dragStartX = 0, dragStartFraction = 0, dragging = false;
+
+      function setupCanvas(canvas, w, h) {
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        var ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return ctx;
+      }
+
+      function piecePath(ctx, x, y) {
+        var PI = Math.PI;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.arc(x + L / 2, y - R + 2, R, 0.72 * PI, 2.26 * PI);
+        ctx.lineTo(x + L, y);
+        ctx.arc(x + L + R - 2, y + L / 2, R, 1.21 * PI, 2.78 * PI);
+        ctx.lineTo(x + L, y + L);
+        ctx.lineTo(x, y + L);
+        ctx.arc(x + R - 2, y + L / 2, R + 0.4, 2.76 * PI, 1.24 * PI, true);
+        ctx.lineTo(x, y);
+        ctx.closePath();
+      }
+
+      function drawSource(ctx, dx, dy) {
+        if (imageReady) {
+          ctx.drawImage(image, dx, dy, W, H);
+        } else {
+          ctx.fillStyle = '#2a2a2e';
+          ctx.fillRect(dx, dy, W, H);
+        }
+      }
+
+      function draw() {
+        var ctx = setupCanvas(bg, W, H);
+        drawSource(ctx, 0, 0);
+        piecePath(ctx, target.x, target.y);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.stroke();
+
+        var pctx = setupCanvas(piece, PW, PW);
+        pctx.save();
+        piecePath(pctx, OX, OY);
+        pctx.clip();
+        drawSource(pctx, OX - target.x, OY - target.y);
+        pctx.restore();
+        piecePath(pctx, OX, OY);
+        pctx.lineWidth = 1.5;
+        pctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+        pctx.stroke();
+
+        piece.style.width = (PW / W * 100) + '%';
+        piece.style.height = (PW / H * 100) + '%';
+        piece.style.top = ((target.y - OY) / H * 100) + '%';
+      }
+
+      function travel() {
+        return Math.max(track.clientWidth - handle.offsetWidth - 6, 1);
+      }
+
+      function pieceX() {
+        return MIN_X + fraction * (MAX_X - MIN_X);
+      }
+
+      function render() {
+        var offset = fraction * travel();
+        handle.style.transform = 'translateX(' + offset + 'px)';
+        fill.style.width = (offset + handle.offsetWidth / 2 + 3) + 'px';
+        root.classList.toggle('is-moved', fraction > 0);
+        piece.style.left = ((pieceX() - OX) / W * 100) + '%';
+        handle.setAttribute('aria-valuenow', String(Math.round(fraction * 100)));
+      }
+
+      function newPuzzle() {
+        target.x = Math.round(W * 0.4 + Math.random() * (MAX_X - 4 - W * 0.4));
+        target.y = Math.round(2 * R + 4 + Math.random() * (H - L - 6 - (2 * R + 4)));
+        fraction = 0;
+        solved = false;
+        busy = false;
+        input.value = '';
+        root.classList.remove('is-solved', 'is-failed');
+        handle.removeAttribute('aria-disabled');
+        handle.setAttribute('aria-valuetext', 'Nicht gelöst');
+        draw();
+        render();
+      }
+
+      function check() {
+        if (solved || busy) return;
+        if (Math.abs(pieceX() - target.x) <= TOLERANCE) {
+          solved = true;
+          fraction = (target.x - MIN_X) / (MAX_X - MIN_X);
+          render();
+          input.value = 'solved';
+          root.classList.add('is-solved');
+          handle.setAttribute('aria-disabled', 'true');
+          handle.setAttribute('aria-valuetext', 'Gelöst');
+          status.textContent = 'Geprüft – danke!';
+          setFieldError(input, '');
+        } else if (fraction > 0) {
+          busy = true;
+          root.classList.add('is-failed');
+          status.textContent = 'Nicht ganz – bitte mit dem neuen Puzzle noch einmal versuchen.';
+          window.setTimeout(newPuzzle, 700);
+        }
+      }
+
+      handle.addEventListener('pointerdown', function (event) {
+        if (solved || busy) return;
+        dragging = true;
+        setFieldError(input, '');
+        dragStartX = event.clientX;
+        dragStartFraction = fraction;
+        handle.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+
+      handle.addEventListener('pointermove', function (event) {
+        if (!dragging) return;
+        status.textContent = '';
+        fraction = Math.min(Math.max(dragStartFraction + (event.clientX - dragStartX) / travel(), 0), 1);
+        render();
+      });
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        check();
+      }
+
+      handle.addEventListener('pointerup', endDrag);
+      handle.addEventListener('pointercancel', endDrag);
+
+      handle.addEventListener('keydown', function (event) {
+        if (solved || busy) return;
+        var step = event.shiftKey ? 0.05 : 0.01;
+        setFieldError(input, '');
+        if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+          fraction = Math.min(fraction + step, 1);
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
+          fraction = Math.max(fraction - step, 0);
+        } else if (event.key === 'Home') {
+          fraction = 0;
+        } else if (event.key === 'End') {
+          fraction = 1;
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          check();
+          return;
+        } else {
+          return;
+        }
+        event.preventDefault();
+        render();
+      });
+
+      refresh.addEventListener('click', function () {
+        status.textContent = '';
+        newPuzzle();
+      });
+      window.addEventListener('resize', render);
+
+      image.onload = function () { imageReady = true; draw(); };
+      image.src = root.getAttribute('data-captcha-src');
+      newPuzzle();
+
+      return {
+        isSolved: function () { return solved; },
+        reset: function () {
+          status.textContent = '';
+          newPuzzle();
+        },
+        input: input,
+        handle: handle
+      };
+    })();
+
     form.addEventListener('submit', function (event) {
       event.preventDefault();
 
@@ -475,6 +688,12 @@
         }
       });
 
+      if (captcha && !captcha.isSolved()) {
+        setFieldError(captcha.input, 'Bitte schieben Sie das Puzzleteil in die passende Lücke.');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = captcha.handle;
+      }
+
       if (!isValid) {
         if (firstInvalid) firstInvalid.focus();
         if (statusBox) {
@@ -489,6 +708,7 @@
       // Für den produktiven Einsatz muss hier eine Übermittlung (z. B. per Formularservice
       // oder eigenem Endpunkt) ergänzt werden.
       form.reset();
+      if (captcha) captcha.reset();
 
       if (statusBox) {
         statusBox.className = 'form-status is-visible success';

@@ -141,6 +141,30 @@
               <p class="field-error" role="alert"></p>
             </div>
 
+            <div class="form-row">
+              <span class="form-label" id="captcha-label">Kurze Sicherheitsprüfung</span>
+              <div class="puzzle-captcha" data-captcha data-captcha-src="assets/Medien/captcha-kamera-fassade.jpg">
+                <div class="puzzle-captcha-stage">
+                  <canvas class="puzzle-captcha-bg" aria-hidden="true"></canvas>
+                  <canvas class="puzzle-captcha-piece" aria-hidden="true"></canvas>
+                  <button type="button" class="puzzle-captcha-refresh" aria-label="Neues Puzzle laden">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg>
+                  </button>
+                </div>
+                <div class="puzzle-captcha-track">
+                  <div class="puzzle-captcha-fill"></div>
+                  <span class="puzzle-captcha-hint">Teil in die Lücke schieben</span>
+                  <button type="button" class="puzzle-captcha-handle" role="slider" aria-labelledby="captcha-label" aria-describedby="captcha-help" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                  </button>
+                </div>
+                <p class="puzzle-captcha-help" id="captcha-help">Ziehen Sie den Regler, bis das Puzzleteil genau in die Lücke passt. Per Tastatur: Pfeiltasten bewegen, Enter bestätigt. Falls das nicht klappt, erreichen Sie uns auch telefonisch.</p>
+                <p class="puzzle-captcha-status" aria-live="polite"></p>
+              </div>
+              <input type="hidden" name="captcha" value="">
+              <p class="field-error" role="alert"></p>
+            </div>
+
             <button type="submit" class="btn btn-primary btn-lg btn-block">Anfrage senden</button>
             <p style="font-size:var(--fs-tiny); color:var(--color-text-faint); margin-top:var(--space-3)">Wir geben Ihre Daten nicht weiter und verwenden sie ausschließlich, um Ihre Anfrage zu beantworten.</p>
 

@@ -2369,6 +2369,197 @@ a.card {
   flex-shrink: 0;
 }
 
+/* ---- Kontaktformular: Puzzle-Captcha ---- */
+.form-row .form-label {
+  display: block;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.puzzle-captcha {
+  max-width: 420px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.puzzle-captcha-stage {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border-strong);
+}
+
+.puzzle-captcha-bg,
+.puzzle-captcha-piece {
+  position: absolute;
+  display: block;
+}
+
+.puzzle-captcha-bg {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.puzzle-captcha-piece {
+  left: 0;
+  top: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+  will-change: transform;
+}
+
+.puzzle-captcha-refresh {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--duration-base) var(--ease-out);
+}
+
+.puzzle-captcha-refresh:hover,
+.puzzle-captcha-refresh:focus-visible {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.puzzle-captcha-refresh:focus-visible,
+.puzzle-captcha-handle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.puzzle-captcha-refresh svg {
+  width: 16px;
+  height: 16px;
+}
+
+.puzzle-captcha-track {
+  position: relative;
+  height: 48px;
+  margin-top: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-deep);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.puzzle-captcha-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--color-accent-soft);
+}
+
+.puzzle-captcha-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-4) 0 60px;
+  font-size: var(--fs-tiny);
+  color: var(--color-text-faint);
+  text-align: center;
+  pointer-events: none;
+}
+
+.puzzle-captcha-handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 40px;
+  border: 0;
+  border-radius: calc(var(--radius-sm) - 3px);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  touch-action: none;
+  transition: background var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
+}
+
+.puzzle-captcha-handle:active {
+  cursor: grabbing;
+}
+
+.puzzle-captcha-handle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.puzzle-captcha.is-solved .puzzle-captcha-handle {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  cursor: default;
+}
+
+.puzzle-captcha-hint {
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.puzzle-captcha.is-moved .puzzle-captcha-hint {
+  opacity: 0;
+}
+
+.puzzle-captcha-status:empty {
+  display: none;
+}
+
+.puzzle-captcha-status {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-danger);
+}
+
+.puzzle-captcha.is-solved .puzzle-captcha-status {
+  color: var(--color-accent);
+}
+
+.puzzle-captcha.is-failed .puzzle-captcha-track {
+  border-color: var(--color-danger);
+}
+
+.puzzle-captcha.is-failed .puzzle-captcha-stage {
+  animation: puzzle-shake 400ms var(--ease-out);
+}
+
+.form-row.has-error .puzzle-captcha-track {
+  border-color: var(--color-danger);
+}
+
+.puzzle-captcha-help {
+  margin-top: var(--space-2);
+  font-size: var(--fs-tiny);
+  color: var(--color-text-faint);
+}
+
+@keyframes puzzle-shake {
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puzzle-captcha.is-failed .puzzle-captcha-stage {
+    animation: none;
+  }
+}
+
 @media (max-width: 900px) {
   .contact-grid {
     grid-template-columns: 1fr;
