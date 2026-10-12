@@ -420,7 +420,7 @@
         return value.trim().length >= 10 ? '' : 'Bitte schreiben Sie uns kurz, worum es geht.';
       },
       consent: function (checked) {
-        return checked ? '' : 'Bitte bestätigen Sie die Einwilligung.';
+        return checked ? '' : 'Bitte bestätigen Sie, dass Sie die Datenschutzhinweise gelesen haben.';
       }
     };
 

@@ -88,7 +88,7 @@ if (text_length($message) < 10) {
     $errors['message'] = 'Bitte schreiben Sie uns kurz, worum es geht.';
 }
 if (!$consent) {
-    $errors['consent'] = 'Bitte bestätigen Sie die Einwilligung.';
+    $errors['consent'] = 'Bitte bestätigen Sie, dass Sie die Datenschutzhinweise gelesen haben.';
 }
 if ($errors) {
     send_json(400, ['ok' => false, 'fields' => $errors, 'error' => 'Bitte prüfen Sie Ihre Angaben und füllen Sie die markierten Felder aus.']);
@@ -109,7 +109,7 @@ $body = implode("\n", [
     $message,
     '',
     '---',
-    'Gesendet am ' . date('d.m.Y \u\m H:i') . ' Uhr. Einwilligung zur Datenverarbeitung wurde erteilt.',
+    'Gesendet am ' . date('d.m.Y \u\m H:i') . ' Uhr. Datenschutzhinweise wurden zur Kenntnis genommen.',
     'Mit „Antworten“ geht Ihre Antwort direkt an ' . $email . '.',
 ]);
 
