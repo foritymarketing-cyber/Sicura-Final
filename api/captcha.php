@@ -9,7 +9,8 @@
  *        ein Versuch erlaubt, danach muss ein neues geladen werden.
  */
 declare(strict_types=1);
-require __DIR__ . '/_lib.php';
+const SICURA_API = true;
+require __DIR__ . '/_intern/lib.php';
 
 start_form_session();
 require_same_origin();
@@ -56,12 +57,18 @@ function image_data_url($image, string $type): string
 
 function new_puzzle(): void
 {
+    if (!rate_limit('captcha', IP_CAPTCHA_LIMIT)) {
+        send_json(429, ['ok' => false, 'error' => 'Zu viele Versuche. Bitte warten Sie etwas oder rufen Sie uns an: 06249 937 9999.']);
+    }
+
     if (!function_exists('imagecreatefromjpeg')) {
+        error_log('Captcha: GD-Erweiterung mit JPEG-Unterstützung fehlt');
         send_json(500, ['ok' => false, 'error' => 'Die Sicherheitsprüfung ist gerade nicht verfügbar.']);
     }
 
     $source = @imagecreatefromjpeg(__DIR__ . '/captcha/bild.jpg');
     if (!$source) {
+        error_log('Captcha: Quellbild konnte nicht geladen werden');
         send_json(500, ['ok' => false, 'error' => 'Die Sicherheitsprüfung ist gerade nicht verfügbar.']);
     }
 
@@ -130,6 +137,9 @@ function new_puzzle(): void
         'solved' => false,
         'used' => false,
     ];
+
+    // Neue Sitzungskennung pro Puzzle (Schutz vor Session Fixation)
+    session_regenerate_id(true);
 
     $data = [
         'ok' => true,

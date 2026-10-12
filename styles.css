@@ -3339,3 +3339,250 @@ a[href^="mailto:"],
   right: 16px;
   bottom: 16px;
 }
+
+/* ==========================================================================
+   Kontakt-Button im Header: sitzt außerhalb des Klappmenüs und bleibt auf
+   allen Bildschirmbreiten sichtbar und erreichbar.
+   ========================================================================== */
+
+.site-header .nav-desktop {
+  margin-left: auto;
+}
+
+.site-header .nav-cta {
+  margin-left: var(--space-7);
+}
+
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .site-header .nav-cta {
+    margin-left: var(--space-5);
+  }
+}
+
+@media (max-width: 1024px) {
+  .site-header .container {
+    gap: var(--space-3);
+  }
+
+  .site-header .nav-cta {
+    width: auto;
+    margin-left: auto;
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-logo {
+    height: 40px;
+  }
+
+  .site-header .nav-cta {
+    padding: 10px 14px;
+    font-size: var(--fs-tiny);
+  }
+}
+
+@media (max-width: 359px) {
+  .brand-logo {
+    height: 32px;
+  }
+}
+
+/* ==========================================================================
+   Inhaberin: Foto auf „Über uns“, neben den Kontaktdaten und auf der
+   Startseite. Bild ist hochformatig (4:5) zugeschnitten.
+   ========================================================================== */
+
+.owner-figure {
+  margin: 0;
+}
+
+.owner-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.owner-figure figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.owner-figure figcaption strong {
+  color: var(--color-text);
+  font-size: var(--fs-body);
+}
+
+.service-stack > .owner-figure {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.owner-figure--small {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: var(--space-5);
+  align-items: center;
+  margin-bottom: var(--space-7);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.owner-figure--small figcaption {
+  margin-top: 0;
+}
+
+.owner-teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.owner-teaser-body > * + * {
+  margin-top: var(--space-4);
+}
+
+.owner-teaser-caption {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.owner-teaser-caption strong {
+  color: var(--color-text);
+}
+
+@media (max-width: 760px) {
+  .owner-teaser {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-figure--teaser {
+    max-width: 360px;
+  }
+}
+
+/* ==========================================================================
+   KI-Kennzeichnung gut lesbar: dunkles, halbtransparentes Schild statt
+   reinem Schattentext, damit es auch auf hellen Motiven lesbar bleibt.
+   ========================================================================== */
+
+.ki-label,
+.solution-card > .ki-label {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.68);
+  color: #fff;
+  font-size: 0.75rem;
+  text-shadow: none;
+}
+
+.covert-hero-media,
+.rg-hero,
+.rg-card-media,
+.rg-article-media,
+.solution-card {
+  position: relative;
+}
+
+/* Die KI-Kennzeichnung der Kachel-Medien bleibt sichtbar, auch wenn die
+   Textebene über dem Bild liegt. */
+.card--media .card-media .ki-label {
+  z-index: 3;
+}
+
+/* ==========================================================================
+   Geräte ohne Hover (Smartphones, Tablets): Kacheltexte und Links sind
+   dauerhaft sichtbar statt nur bei Hover/Berührung.
+   ========================================================================== */
+
+@media (hover: none), (pointer: coarse) {
+  .card--media .card-body {
+    background: rgba(0, 0, 0, 0.7);
+    padding-bottom: 48px;
+  }
+
+  .card--media .card-body p,
+  .card--media .card-body .card-link {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--media .card-body {
+    background: rgba(0, 0, 0, 0.7);
+    padding-bottom: 48px;
+  }
+
+  .card--media .card-body p,
+  .card--media .card-body .card-link {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Hero-Video anhalten/abspielen (WCAG 2.2.2): Schalter unten links.
+   ========================================================================== */
+
+.hero-video-toggle {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: var(--fs-tiny);
+  font-weight: 500;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.hero-video-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+.hero-video-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.hero-video-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.hero-liquid-bg > .ki-label {
+  pointer-events: none;
+}
+
+/* Bei reduzierter Bewegung oder ohne Hover-Möglichkeit: Hero-Text dauerhaft
+   sichtbar (kein Ausblenden nach 3 s). */
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .hero.hero--idle.is-idle-ready .hero-content {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .hero--idle.is-idle-ready .hero-scrim {
+    opacity: 1;
+  }
+}

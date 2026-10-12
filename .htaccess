@@ -1,0 +1,107 @@
+# ==========================================================================
+# Sicura Sicherheitstechnik – Apache-Konfiguration für STRATO
+# ==========================================================================
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ---- HTTPS erzwingen ----
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://www.sicura-sicherheitstechnik.de%{REQUEST_URI} [R=301,L]
+
+  # ---- Einheitlich mit www (wie Canonical-Adressen und Sitemap) ----
+  RewriteCond %{HTTP_HOST} ^sicura-sicherheitstechnik\.de$ [NC]
+  RewriteRule ^ https://www.sicura-sicherheitstechnik.de%{REQUEST_URI} [R=301,L]
+
+  # ---- Interne Dateien und Verzeichnisse sperren ----
+  # Versteckte Dateien/Ordner (.git, .env, .claude, .DS_Store …)
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
+  RewriteRule (^|/)\. - [F,L]
+  # Interne PHP-Hilfsdateien, Captcha-Quellbild, Werkzeuge
+  RewriteRule ^api/(_intern|captcha)(/|$) - [F,L]
+  RewriteRule ^(tools|docs)(/|$) - [F,L]
+  # Nur die zwei öffentlichen API-Endpunkte sind abrufbar
+  RewriteCond %{REQUEST_URI} \.php$ [NC]
+  RewriteCond %{REQUEST_URI} !^/api/(kontakt|captcha)\.php$ [NC]
+  RewriteRule ^ - [F,L]
+  # Projekt-, Sicherungs- und Konfigurationsdateien
+  RewriteRule \.(md|sh|json|lock|log|bak|backup|old|orig|sql|zip|tar|gz|ini|env|yml|yaml|swp)$ - [F,L,NC]
+  RewriteRule ~$ - [F,L]
+
+  # ---- Alte Leistungs-Adressen (/leistungen/xyz) dauerhaft umleiten ----
+  RewriteRule ^leistungen/(videoueberwachung|einbruchmeldeanlagen|service-wartung|verdeckte-videoueberwachung|kurzeinsaetze)/?$ /leistungen-$1 [R=301,L]
+
+  # ---- .html-Adressen ohne Endung ausliefern ----
+  # Clean URLs: /kontakt liefert kontakt.html aus
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([^.]+?)/?$ $1.html [L]
+</IfModule>
+
+# Zusätzliche Sperre, falls mod_rewrite nicht greift
+<FilesMatch "(^\.|\.(md|sh|json|log|bak|sql|env|ini)$)">
+  Require all denied
+</FilesMatch>
+<Files "robots.txt">
+  Require all granted
+</Files>
+
+# ---- Sicherheitsheader ----
+<IfModule mod_headers.c>
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), autoplay=(self), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  # CSP: alles von der eigenen Domain; data: für die Captcha-Bilder;
+  # 'unsafe-inline' nur für style-Attribute im Markup (keine Inline-Skripte).
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+  # HSTS erst aktivieren, wenn HTTPS (inkl. www und ohne www) zuverlässig
+  # funktioniert. Danach die Raute entfernen:
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+
+  # Keine Zwischenspeicherung der API-Antworten
+  <FilesMatch "\.php$">
+    Header always set Cache-Control "no-store"
+  </FilesMatch>
+</IfModule>
+
+# ---- Dateitypen ----
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddType video/mp4 .mp4
+  AddCharset utf-8 .html .css .js .xml .txt
+</IfModule>
+
+# ---- Caching statischer Dateien ----
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType text/javascript "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 30 days"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/xml image/svg+xml
+</IfModule>

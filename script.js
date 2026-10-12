@@ -65,10 +65,13 @@
 
   /* ---- Hero-Video: bei reduzierter Bewegung als Standbild anhalten ----
      Die ersten Sekunden zeigen nur das Logo-Intro, daher wird auf ein
-     aussagekräftiges Motiv (Sekunde 5, entspricht dem Poster) gesprungen. */
+     aussagekräftiges Motiv (Sekunde 5, entspricht dem Poster) gesprungen.
+     Zusätzlich ein Schalter zum Anhalten/Abspielen (WCAG 2.2.2). */
   var heroVideo = document.querySelector('.hero-video');
 
   if (heroVideo && prefersReducedMotion) {
+    heroVideo.removeAttribute('autoplay');
+    heroVideo.pause();
     heroVideo.addEventListener(
       'loadeddata',
       function () {
@@ -77,6 +80,34 @@
       },
       { once: true }
     );
+  }
+
+  if (heroVideo) {
+    var heroMedia = heroVideo.parentNode;
+    var videoToggle = document.createElement('button');
+    videoToggle.type = 'button';
+    videoToggle.className = 'hero-video-toggle';
+    heroMedia.appendChild(videoToggle);
+
+    var iconPause = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>';
+    var iconPlay = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
+
+    var updateVideoToggle = function () {
+      var paused = heroVideo.paused;
+      videoToggle.innerHTML = (paused ? iconPlay : iconPause) + '<span>' + (paused ? 'Video abspielen' : 'Video anhalten') + '</span>';
+    };
+
+    videoToggle.addEventListener('click', function () {
+      if (heroVideo.paused) {
+        var p = heroVideo.play();
+        if (p && p.catch) p.catch(function () {});
+      } else {
+        heroVideo.pause();
+      }
+    });
+    heroVideo.addEventListener('play', updateVideoToggle);
+    heroVideo.addEventListener('pause', updateVideoToggle);
+    updateVideoToggle();
   }
 
   /* ---- Kachel-Videos: bei reduzierter Bewegung auf die Explosionsansicht
@@ -215,20 +246,20 @@
   }
 
   /* ---- Hero-Text erst bei Interaktion einblenden ----
-     Desktop: Mausbewegung, Ausblenden nach 3 s ohne Bewegung.
-     Touch: Antippen, Ausblenden nach 3 s ohne Interaktion.
-     Tastatur: bleibt sichtbar, solange ein per Tastatur fokussiertes
-     Element im Hero liegt (:focus-visible), damit Tab-Nutzer die Buttons
-     erreichen. */
+     Nur auf Geräten mit Maus (Hover möglich) und ohne Wunsch nach
+     reduzierter Bewegung: Einblenden bei Mausbewegung oder Tastatur,
+     Ausblenden nach 3 s ohne Interaktion, damit das Video zur Geltung
+     kommt. Solange ein per Tastatur fokussiertes Element im Hero liegt
+     (:focus-visible), bleibt der Text sichtbar. Auf Touch-Geräten und bei
+     reduzierter Bewegung bleibt der Text dauerhaft sichtbar (siehe CSS),
+     wichtige Inhalte hängen also nie von einer Mausbewegung ab. */
   var idleHero = document.querySelector('.hero--idle');
   var idleContent = idleHero && idleHero.querySelector('.hero-content');
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  if (idleHero && idleContent) {
-    var mouseIdleDelay = 3000;
-    var touchIdleDelay = 3000;
+  if (idleHero && idleContent && canHover && !prefersReducedMotion) {
+    var idleDelay = 3000;
     var idleTimer = null;
-    var tapRevealed = false;
-    var textAlwaysVisible = window.matchMedia('(max-width: 1024px)');
 
     var hasKeyboardFocus = function () {
       try {
@@ -238,63 +269,26 @@
       }
     };
 
-    var scheduleHide = function (delay) {
+    var scheduleHide = function () {
       clearTimeout(idleTimer);
       idleTimer = setTimeout(function () {
         if (hasKeyboardFocus()) {
-          scheduleHide(delay);
+          scheduleHide();
           return;
         }
         idleHero.classList.remove('is-active');
-      }, delay);
+      }, idleDelay);
     };
 
-    var showText = function (delay) {
+    var showText = function () {
       idleHero.classList.add('is-active');
-      scheduleHide(delay);
+      scheduleHide();
     };
 
-    window.addEventListener(
-      'pointermove',
-      function (e) {
-        if (e.pointerType === 'mouse') showText(mouseIdleDelay);
-      },
-      { passive: true }
-    );
-
-    // Ein Tippen auf den noch unsichtbaren Text soll ihn nur einblenden,
-    // nicht versehentlich einen der (unsichtbaren) Buttons auslösen.
-    window.addEventListener(
-      'pointerdown',
-      function (e) {
-        var isMouse = e.pointerType === 'mouse';
-        // Unterhalb Desktop-Breite ist der Text immer sichtbar (siehe CSS).
-        tapRevealed =
-          !isMouse &&
-          !idleHero.classList.contains('is-active') &&
-          !textAlwaysVisible.matches;
-        showText(isMouse ? mouseIdleDelay : touchIdleDelay);
-      },
-      { passive: true }
-    );
-
-    idleContent.addEventListener(
-      'click',
-      function (e) {
-        if (tapRevealed) {
-          e.preventDefault();
-          tapRevealed = false;
-        }
-      },
-      true
-    );
-
-    idleHero.addEventListener('focusin', function () {
-      if (hasKeyboardFocus()) showText(touchIdleDelay);
-    });
-    window.addEventListener('keydown', function () {
-      showText(touchIdleDelay);
-    });
+    window.addEventListener('pointermove', showText, { passive: true });
+    window.addEventListener('pointerdown', showText, { passive: true });
+    window.addEventListener('keydown', showText);
+    idleHero.addEventListener('focusin', showText);
 
     idleHero.classList.add('is-idle-ready');
   }
