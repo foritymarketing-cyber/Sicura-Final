@@ -459,22 +459,16 @@
     });
 
     /* ---- Puzzle-Captcha ----
-       Ein Puzzleteil wird an einer zufälligen Stelle aus dem Bild „ausgeschnitten“
-       und muss per Schieberegler in die Lücke geschoben werden. Gezeichnet wird
-       auf Canvas in festen internen Koordinaten (W × H), die per CSS skaliert
-       werden. Hinweis: Die Prüfung läuft nur im Browser und hält einfache Bots
-       ab; sobald ein Backend existiert, muss sie zusätzlich serverseitig erfolgen. */
+       Der Server (api/captcha.php) erzeugt Hintergrund mit Lücke und Puzzleteil
+       und merkt sich die richtige Position in der Sitzung; der Browser kennt
+       sie nicht. Hier wird nur das Teil per Schieberegler bewegt und die
+       erreichte Position zur Prüfung an den Server geschickt. Alle Positionen
+       sind in Pixeln des Server-Bildes (data.w × data.h). */
     var captcha = (function () {
       var root = form.querySelector('[data-captcha]');
       if (!root) return null;
 
-      var W = 360, H = 240;          // interne Bildgröße
-      var L = 44, R = 9;             // Kantenlänge und Nasenradius des Teils
-      var PW = L + 2 * R + 4;        // Canvas-Größe des Teils
-      var OX = 2, OY = 2 * R + 2;    // Lage des Quadrats im Teil-Canvas
-      var MIN_X = 4, MAX_X = W - L - R - 8;
-      var TOLERANCE = 5;
-
+      var endpoint = root.getAttribute('data-captcha-endpoint');
       var bg = root.querySelector('.puzzle-captcha-bg');
       var piece = root.querySelector('.puzzle-captcha-piece');
       var track = root.querySelector('.puzzle-captcha-track');
@@ -483,79 +477,19 @@
       var refresh = root.querySelector('.puzzle-captcha-refresh');
       var input = form.elements.captcha;
       var status = root.querySelector('.puzzle-captcha-status');
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      var image = new Image();
-      var imageReady = false;
-      var target = { x: 0, y: 0 };
+      var data = null;
       var fraction = 0;
       var solved = false;
-      var busy = false;
+      var busy = true;
       var dragStartX = 0, dragStartFraction = 0, dragging = false;
-
-      function setupCanvas(canvas, w, h) {
-        canvas.width = Math.round(w * dpr);
-        canvas.height = Math.round(h * dpr);
-        var ctx = canvas.getContext('2d');
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        return ctx;
-      }
-
-      function piecePath(ctx, x, y) {
-        var PI = Math.PI;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.arc(x + L / 2, y - R + 2, R, 0.72 * PI, 2.26 * PI);
-        ctx.lineTo(x + L, y);
-        ctx.arc(x + L + R - 2, y + L / 2, R, 1.21 * PI, 2.78 * PI);
-        ctx.lineTo(x + L, y + L);
-        ctx.lineTo(x, y + L);
-        ctx.arc(x + R - 2, y + L / 2, R + 0.4, 2.76 * PI, 1.24 * PI, true);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-      }
-
-      function drawSource(ctx, dx, dy) {
-        if (imageReady) {
-          ctx.drawImage(image, dx, dy, W, H);
-        } else {
-          ctx.fillStyle = '#2a2a2e';
-          ctx.fillRect(dx, dy, W, H);
-        }
-      }
-
-      function draw() {
-        var ctx = setupCanvas(bg, W, H);
-        drawSource(ctx, 0, 0);
-        piecePath(ctx, target.x, target.y);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-        ctx.fill();
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.stroke();
-
-        var pctx = setupCanvas(piece, PW, PW);
-        pctx.save();
-        piecePath(pctx, OX, OY);
-        pctx.clip();
-        drawSource(pctx, OX - target.x, OY - target.y);
-        pctx.restore();
-        piecePath(pctx, OX, OY);
-        pctx.lineWidth = 1.5;
-        pctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
-        pctx.stroke();
-
-        piece.style.width = (PW / W * 100) + '%';
-        piece.style.height = (PW / H * 100) + '%';
-        piece.style.top = ((target.y - OY) / H * 100) + '%';
-      }
 
       function travel() {
         return Math.max(track.clientWidth - handle.offsetWidth - 6, 1);
       }
 
       function pieceX() {
-        return MIN_X + fraction * (MAX_X - MIN_X);
+        return data ? data.minX + fraction * (data.maxX - data.minX) : 0;
       }
 
       function render() {
@@ -563,42 +497,80 @@
         handle.style.transform = 'translateX(' + offset + 'px)';
         fill.style.width = (offset + handle.offsetWidth / 2 + 3) + 'px';
         root.classList.toggle('is-moved', fraction > 0);
-        piece.style.left = ((pieceX() - OX) / W * 100) + '%';
+        if (data) piece.style.left = ((pieceX() - data.ox) / data.w * 100) + '%';
         handle.setAttribute('aria-valuenow', String(Math.round(fraction * 100)));
       }
 
+      function setUnavailable(message) {
+        busy = true;
+        root.classList.add('is-unavailable');
+        status.textContent = message || 'Die Sicherheitsprüfung konnte nicht geladen werden. Bitte laden Sie ein neues Puzzle oder rufen Sie uns an.';
+      }
+
       function newPuzzle() {
-        target.x = Math.round(W * 0.4 + Math.random() * (MAX_X - 4 - W * 0.4));
-        target.y = Math.round(2 * R + 4 + Math.random() * (H - L - 6 - (2 * R + 4)));
         fraction = 0;
         solved = false;
-        busy = false;
+        busy = true;
+        data = null;
         input.value = '';
-        root.classList.remove('is-solved', 'is-failed');
+        root.classList.remove('is-solved', 'is-failed', 'is-unavailable');
+        root.classList.add('is-loading');
         handle.removeAttribute('aria-disabled');
         handle.setAttribute('aria-valuetext', 'Nicht gelöst');
-        draw();
         render();
+
+        fetch(endpoint, { credentials: 'same-origin', cache: 'no-store' })
+          .then(function (response) { return response.json(); })
+          .then(function (result) {
+            root.classList.remove('is-loading');
+            if (!result || !result.ok) {
+              setUnavailable(result && result.error);
+              return;
+            }
+            data = result;
+            bg.src = data.bg;
+            piece.src = data.piece;
+            piece.style.width = (data.pw / data.w * 100) + '%';
+            piece.style.top = ((data.y - data.oy) / data.h * 100) + '%';
+            busy = false;
+            render();
+          })
+          .catch(function () {
+            root.classList.remove('is-loading');
+            setUnavailable();
+          });
+      }
+
+      function fail() {
+        busy = true;
+        root.classList.add('is-failed');
+        status.textContent = 'Nicht ganz – bitte mit dem neuen Puzzle noch einmal versuchen.';
+        window.setTimeout(newPuzzle, 700);
       }
 
       function check() {
-        if (solved || busy) return;
-        if (Math.abs(pieceX() - target.x) <= TOLERANCE) {
-          solved = true;
-          fraction = (target.x - MIN_X) / (MAX_X - MIN_X);
-          render();
-          input.value = 'solved';
-          root.classList.add('is-solved');
-          handle.setAttribute('aria-disabled', 'true');
-          handle.setAttribute('aria-valuetext', 'Gelöst');
-          status.textContent = 'Geprüft – danke!';
-          setFieldError(input, '');
-        } else if (fraction > 0) {
-          busy = true;
-          root.classList.add('is-failed');
-          status.textContent = 'Nicht ganz – bitte mit dem neuen Puzzle noch einmal versuchen.';
-          window.setTimeout(newPuzzle, 700);
-        }
+        if (solved || busy || fraction === 0) return;
+        busy = true;
+        var body = new FormData();
+        body.append('action', 'verify');
+        body.append('x', String(Math.round(pieceX())));
+
+        fetch(endpoint, { method: 'POST', body: body, credentials: 'same-origin' })
+          .then(function (response) { return response.json(); })
+          .then(function (result) {
+            if (!result || !result.ok) {
+              fail();
+              return;
+            }
+            solved = true;
+            input.value = 'solved';
+            root.classList.add('is-solved');
+            handle.setAttribute('aria-disabled', 'true');
+            handle.setAttribute('aria-valuetext', 'Gelöst');
+            status.textContent = 'Geprüft – danke!';
+            setFieldError(input, '');
+          })
+          .catch(fail);
       }
 
       handle.addEventListener('pointerdown', function (event) {
@@ -656,8 +628,6 @@
       });
       window.addEventListener('resize', render);
 
-      image.onload = function () { imageReady = true; draw(); };
-      image.src = root.getAttribute('data-captcha-src');
       newPuzzle();
 
       return {
@@ -704,19 +674,47 @@
         return;
       }
 
-      // Hinweis: Dieses Formular ist aktuell nicht an ein Backend/E-Mail-Postfach angebunden.
-      // Für den produktiven Einsatz muss hier eine Übermittlung (z. B. per Formularservice
-      // oder eigenem Endpunkt) ergänzt werden.
-      form.reset();
-      if (captcha) captcha.reset();
+      // Versand über api/kontakt.php; bei Erfolg geht es weiter zur Danke-Seite
+      var submitButton = form.querySelector('[type="submit"]');
+      var submitLabel = submitButton.textContent;
+      submitButton.disabled = true;
+      submitButton.textContent = 'Wird gesendet …';
+      if (statusBox) statusBox.className = 'form-status';
 
-      if (statusBox) {
-        statusBox.className = 'form-status is-visible success';
+      function showSubmitError(message) {
+        submitButton.disabled = false;
+        submitButton.textContent = submitLabel;
+        if (!statusBox) return;
+        statusBox.className = 'form-status is-visible error';
         statusBox.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Vielen Dank. Wir sehen uns Ihre Nachricht an und melden uns bei Ihnen. Wenn es eilig ist, rufen Sie gerne direkt an: <a class="phone" href="tel:+4962499379999">06249 937 9999</a>.</span>';
-        statusBox.setAttribute('role', 'status');
-        statusBox.setAttribute('aria-live', 'polite');
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg><span></span>';
+        statusBox.querySelector('span').textContent = message;
       }
+
+      fetch(form.getAttribute('action'), {
+        method: 'POST',
+        body: new FormData(form),
+        credentials: 'same-origin'
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (result) {
+          if (result && result.ok) {
+            window.location.href = 'danke.html';
+            return;
+          }
+          if (result && result.fields) {
+            Object.keys(result.fields).forEach(function (fieldName) {
+              var field = form.elements[fieldName];
+              if (field) setFieldError(field, result.fields[fieldName]);
+            });
+          }
+          if (result && result.captcha && captcha) captcha.reset();
+          showSubmitError((result && result.error) || 'Ihre Nachricht konnte nicht gesendet werden.');
+        })
+        .catch(function () {
+          if (captcha) captcha.reset();
+          showSubmitError('Ihre Nachricht konnte gerade nicht gesendet werden. Bitte rufen Sie uns an: 06249 937 9999.');
+        });
     });
   }
 

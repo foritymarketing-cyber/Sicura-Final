@@ -4,5 +4,6 @@ Disallow: /impressum
 Disallow: /datenschutz
 Disallow: /danke
 Disallow: /404
+Disallow: /api/
 
 Sitemap: https://www.sicura-sicherheitstechnik.de/sitemap.xml

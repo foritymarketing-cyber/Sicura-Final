@@ -95,7 +95,7 @@
             </dl>
           </aside>
 
-          <form class="contact-form" id="contact-form" novalidate data-reveal>
+          <form class="contact-form" id="contact-form" action="api/kontakt.php" method="post" novalidate data-reveal>
             <div class="form-row">
               <label for="name">Name</label>
               <input type="text" id="name" name="name" autocomplete="name" required>
@@ -106,6 +106,11 @@
               <label for="email">E-Mail</label>
               <input type="email" id="email" name="email" autocomplete="email" required>
               <p class="field-error" role="alert"></p>
+            </div>
+
+            <div class="form-hp" aria-hidden="true">
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
             <div class="form-row">
@@ -143,10 +148,10 @@
 
             <div class="form-row">
               <span class="form-label" id="captcha-label">Kurze Sicherheitsprüfung</span>
-              <div class="puzzle-captcha" data-captcha data-captcha-src="assets/Medien/captcha-kamera-fassade.jpg">
+              <div class="puzzle-captcha" data-captcha data-captcha-endpoint="api/captcha.php">
                 <div class="puzzle-captcha-stage">
-                  <canvas class="puzzle-captcha-bg" aria-hidden="true"></canvas>
-                  <canvas class="puzzle-captcha-piece" aria-hidden="true"></canvas>
+                  <img class="puzzle-captcha-bg" alt="" draggable="false">
+                  <img class="puzzle-captcha-piece" alt="" draggable="false">
                   <button type="button" class="puzzle-captcha-refresh" aria-label="Neues Puzzle laden">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg>
                   </button>

@@ -2396,6 +2396,31 @@ a.card {
 .puzzle-captcha-piece {
   position: absolute;
   display: block;
+  max-width: none;
+  pointer-events: none;
+}
+
+.puzzle-captcha-bg:not([src]),
+.puzzle-captcha-piece:not([src]) {
+  visibility: hidden;
+}
+
+.puzzle-captcha.is-loading .puzzle-captcha-stage {
+  opacity: 0.6;
+}
+
+.puzzle-captcha.is-unavailable .puzzle-captcha-handle {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Honeypot gegen Spam-Bots: für Menschen unsichtbar */
+.form-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .puzzle-captcha-bg {
@@ -2407,6 +2432,7 @@ a.card {
 .puzzle-captcha-piece {
   left: 0;
   top: 0;
+  height: auto;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
   will-change: transform;
 }
