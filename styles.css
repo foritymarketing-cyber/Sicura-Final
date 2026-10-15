@@ -3648,21 +3648,6 @@ a[href^="mailto:"],
   }
 }
 
-/* ==========================================================================
-   KI-Kennzeichnung gut lesbar: dunkles, halbtransparentes Schild statt
-   reinem Schattentext, damit es auch auf hellen Motiven lesbar bleibt.
-   ========================================================================== */
-
-.ki-label,
-.solution-card > .ki-label {
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.68);
-  color: #fff;
-  font-size: 0.75rem;
-  text-shadow: none;
-}
-
 .covert-hero-media,
 .rg-hero,
 .rg-card-media,
@@ -3706,42 +3691,6 @@ a[href^="mailto:"],
     opacity: 1;
     transform: none;
   }
-}
-
-/* ==========================================================================
-   Hero-Video anhalten/abspielen (WCAG 2.2.2): Schalter unten links.
-   ========================================================================== */
-
-.hero-video-toggle {
-  position: absolute;
-  left: 16px;
-  bottom: 16px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: var(--fs-tiny);
-  font-weight: 500;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.hero-video-toggle svg {
-  width: 14px;
-  height: 14px;
-}
-
-.hero-video-toggle:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.hero-video-toggle:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
 }
 
 .hero-liquid-bg > .ki-label {

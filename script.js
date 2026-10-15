@@ -65,8 +65,7 @@
 
   /* ---- Hero-Video: bei reduzierter Bewegung als Standbild anhalten ----
      Die ersten Sekunden zeigen nur das Logo-Intro, daher wird auf ein
-     aussagekräftiges Motiv (Sekunde 5, entspricht dem Poster) gesprungen.
-     Zusätzlich ein Schalter zum Anhalten/Abspielen (WCAG 2.2.2). */
+     aussagekräftiges Motiv (Sekunde 5, entspricht dem Poster) gesprungen. */
   var heroVideo = document.querySelector('.hero-video');
 
   if (heroVideo && prefersReducedMotion) {
@@ -80,34 +79,6 @@
       },
       { once: true }
     );
-  }
-
-  if (heroVideo) {
-    var heroMedia = heroVideo.parentNode;
-    var videoToggle = document.createElement('button');
-    videoToggle.type = 'button';
-    videoToggle.className = 'hero-video-toggle';
-    heroMedia.appendChild(videoToggle);
-
-    var iconPause = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>';
-    var iconPlay = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
-
-    var updateVideoToggle = function () {
-      var paused = heroVideo.paused;
-      videoToggle.innerHTML = (paused ? iconPlay : iconPause) + '<span>' + (paused ? 'Video abspielen' : 'Video anhalten') + '</span>';
-    };
-
-    videoToggle.addEventListener('click', function () {
-      if (heroVideo.paused) {
-        var p = heroVideo.play();
-        if (p && p.catch) p.catch(function () {});
-      } else {
-        heroVideo.pause();
-      }
-    });
-    heroVideo.addEventListener('play', updateVideoToggle);
-    heroVideo.addEventListener('pause', updateVideoToggle);
-    updateVideoToggle();
   }
 
   /* ---- Kachel-Videos: bei reduzierter Bewegung auf die Explosionsansicht
