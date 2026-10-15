@@ -712,6 +712,139 @@
     });
   }
 
+  /* ---- Referenzen: Laufbänder ----
+     Jede Reihe läuft langsam in ihre Richtung (data-direction), hält beim
+     Überfahren mit der Maus an und lässt sich per Ziehen (Maus, Finger) oder
+     waagerechtem Trackpad-Wischen verschieben. Die Spur enthält ihre Karten
+     in zwei gleichen Hälften; der Versatz wird auf eine Hälfte begrenzt, damit
+     die Schleife nahtlos ist. Bei reduzierter Bewegung läuft nichts von
+     selbst, Verschieben bleibt möglich. */
+  var sectorRows = document.querySelectorAll('.sector-row');
+
+  sectorRows.forEach(function (row) {
+    var track = row.querySelector('.sector-track');
+    if (!track) return;
+
+    var speed = 22; // px pro Sekunde
+    var direction = row.getAttribute('data-direction') === 'right' ? -1 : 1;
+    var halfWidth = 0;
+    var offset = 0;
+    var isHovered = false;
+    var isDragging = false;
+    var resumeAt = 0;
+    var dragPointerId = null;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var dragStartOffset = 0;
+    var dragLocked = false;
+    var lastTime = 0;
+
+    var wrap = function () {
+      if (halfWidth <= 0) return;
+      offset = ((offset % halfWidth) + halfWidth) % halfWidth;
+    };
+
+    var render = function () {
+      track.style.transform = 'translate3d(' + (-offset) + 'px, 0, 0)';
+    };
+
+    var measure = function () {
+      halfWidth = track.scrollWidth / 2;
+      wrap();
+      render();
+    };
+
+    var tick = function (time) {
+      var delta = lastTime ? Math.min(time - lastTime, 100) / 1000 : 0;
+      lastTime = time;
+      if (!prefersReducedMotion && !isHovered && !isDragging && time >= resumeAt) {
+        offset += direction * speed * delta;
+        wrap();
+        render();
+      }
+      window.requestAnimationFrame(tick);
+    };
+
+    row.addEventListener('mouseenter', function () {
+      isHovered = true;
+    });
+    row.addEventListener('mouseleave', function () {
+      isHovered = false;
+    });
+
+    row.addEventListener('pointerdown', function (event) {
+      if (event.pointerType === 'mouse') {
+        if (event.button !== 0) return;
+        // Verhindert natives Ziehen/Markieren, das das Loslassen verschlucken kann
+        event.preventDefault();
+      }
+      isDragging = true;
+      dragLocked = event.pointerType === 'mouse';
+      dragPointerId = event.pointerId;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      dragStartOffset = offset;
+      if (dragLocked) {
+        row.setPointerCapture(event.pointerId);
+        row.classList.add('is-dragging');
+      }
+    });
+
+    row.addEventListener('pointermove', function (event) {
+      if (!isDragging || event.pointerId !== dragPointerId) return;
+      // Maustaste wurde losgelassen, ohne dass ein pointerup ankam (z. B.
+      // außerhalb des Fensters): Ziehen beenden statt am Cursor zu kleben
+      if (event.pointerType === 'mouse' && (event.buttons & 1) === 0) {
+        endDrag(event);
+        return;
+      }
+      var dx = event.clientX - dragStartX;
+      // Touch: erst entscheiden, ob waagerecht verschoben oder senkrecht gescrollt wird
+      if (!dragLocked) {
+        if (Math.abs(dx) < 6 && Math.abs(event.clientY - dragStartY) < 6) return;
+        if (Math.abs(dx) <= Math.abs(event.clientY - dragStartY)) {
+          isDragging = false;
+          return;
+        }
+        dragLocked = true;
+        row.setPointerCapture(event.pointerId);
+        row.classList.add('is-dragging');
+      }
+      offset = dragStartOffset - dx;
+      wrap();
+      render();
+    });
+
+    var endDrag = function (event) {
+      if (!isDragging || (event && event.pointerId !== dragPointerId)) return;
+      isDragging = false;
+      dragPointerId = null;
+      row.classList.remove('is-dragging');
+      // Nach dem Loslassen auf Touch-Geräten kurz stehen bleiben
+      resumeAt = performance.now() + (event && event.pointerType !== 'mouse' ? 1500 : 0);
+    };
+    row.addEventListener('pointerup', endDrag);
+    row.addEventListener('pointercancel', endDrag);
+    row.addEventListener('lostpointercapture', endDrag);
+    window.addEventListener('blur', function () {
+      endDrag();
+    });
+
+    // Waagerechtes Wischen auf dem Trackpad
+    row.addEventListener('wheel', function (event) {
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      event.preventDefault();
+      offset += event.deltaX;
+      wrap();
+      render();
+    }, { passive: false });
+
+    measure();
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    window.requestAnimationFrame(tick);
+  });
+
   /* ---- Aktuelles Jahr im Footer ---- */
   var yearEls = document.querySelectorAll('[data-current-year]');
   yearEls.forEach(function (el) {
