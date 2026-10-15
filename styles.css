@@ -2839,21 +2839,24 @@ a.card {
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* Agentur-Credit: Verlaufsschrift mit Unterstrich, der beim Hover
-   auf volle Breite wächst; Pfeil rückt leicht nach oben rechts. */
+/* Agentur-Credit: Verlaufsschrift mit Unterstrich unter „Fority“,
+   der beim Hover auf die volle Breite des Namens wächst. */
 .footer-credit {
   position: relative;
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 0.35em;
-  padding-bottom: 3px;
+  display: inline-block;
   font-weight: 700;
   color: #a78bfa;
   white-space: nowrap;
 }
 
+.footer-credit__word {
+  position: relative;
+  display: inline-block;
+}
+
 .footer-credit__text,
-.footer-credit::after {
+.footer-credit::after,
+.footer-credit__word::after {
   background: linear-gradient(90deg, #c084fc, #818cf8, #60a5fa, #818cf8, #c084fc);
   background-size: 200% 100%;
   animation: footer-credit-flow 4s linear infinite;
@@ -2871,41 +2874,41 @@ a.card {
   }
 }
 
-.footer-credit::after {
+.footer-credit::after,
+.footer-credit__word::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 2.2em;
   height: 2px;
   border-radius: 2px;
-  transition: width var(--duration-base) var(--ease-out);
 }
 
-.footer-credit__arrow {
-  margin-top: -0.15em;
-  color: #c084fc;
+.footer-credit__word::after {
+  right: 0;
+  bottom: -3px;
+}
+
+.footer-credit::after {
+  bottom: -3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
   transition: transform var(--duration-base) var(--ease-out);
 }
 
 .footer-credit:hover::after,
 .footer-credit:focus-visible::after {
-  width: calc(100% - 1.2em);
-}
-
-.footer-credit:hover .footer-credit__arrow,
-.footer-credit:focus-visible .footer-credit__arrow {
-  transform: translate(2px, -2px);
+  transform: scaleX(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .footer-credit::after,
-  .footer-credit__arrow {
+  .footer-credit::after {
     transition: none;
   }
 
   .footer-credit__text,
-  .footer-credit::after {
+  .footer-credit::after,
+  .footer-credit__word::after {
     animation: none;
   }
 }
