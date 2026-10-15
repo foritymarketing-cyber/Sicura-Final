@@ -2841,9 +2841,10 @@ a.card {
 
 /* Agentur-Credit: Verlaufsschrift mit Unterstrich unter „Fority“,
    der beim Hover auf die volle Breite des Namens wächst. */
+/* Bewusst inline statt inline-block: Safari färbt bei background-clip: text
+   keinen Text in inline-block-Kindern ein (das Wort wäre unsichtbar). */
 .footer-credit {
   position: relative;
-  display: inline-block;
   font-weight: 700;
   color: #a78bfa;
   white-space: nowrap;
@@ -2851,7 +2852,6 @@ a.card {
 
 .footer-credit__word {
   position: relative;
-  display: inline-block;
 }
 
 .footer-credit__text,
