@@ -2061,9 +2061,31 @@ a.card {
   touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
-  /* Weiche Ränder links und rechts */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  position: relative;
+}
+
+/* Weiche Ränder links und rechts: Verlauf in Hintergrundfarbe über der Spur.
+   Bewusst keine mask-image, die zwingt den Browser (v. a. Safari), die ganze
+   Reihe bei jeder Bewegung neu zu zeichnen, und lässt das Ziehen ruckeln. */
+.sector-row::before,
+.sector-row::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 6%;
+  pointer-events: none;
+}
+
+.sector-row::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-bg), rgba(10, 10, 11, 0));
+}
+
+.sector-row::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-bg), rgba(10, 10, 11, 0));
 }
 
 .sector-row.is-dragging {

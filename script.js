@@ -713,81 +713,133 @@
   }
 
   /* ---- Referenzen: Laufbänder ----
-     Jede Reihe läuft langsam in ihre Richtung (data-direction), hält beim
-     Überfahren mit der Maus an und lässt sich per Ziehen (Maus, Finger) oder
-     waagerechtem Trackpad-Wischen verschieben. Die Spur enthält ihre Karten
-     in zwei gleichen Hälften; der Versatz wird auf eine Hälfte begrenzt, damit
-     die Schleife nahtlos ist. Bei reduzierter Bewegung läuft nichts von
-     selbst, Verschieben bleibt möglich. */
+     Jede Reihe läuft langsam in ihre Richtung (data-direction), bremst beim
+     Überfahren mit der Maus weich ab und lässt sich per Ziehen (Maus, Finger)
+     oder waagerechtem Trackpad-Wischen verschieben. Nach dem Loslassen gleitet
+     sie mit Schwung aus. Eingaben ändern nur den Sollwert; gezeichnet wird
+     einmal pro Bild in tick(). Die Spur enthält ihre Karten in zwei gleichen
+     Hälften; der Versatz wird auf eine Hälfte begrenzt, damit die Schleife
+     nahtlos ist. Bei reduzierter Bewegung läuft nichts von selbst und es gibt
+     keinen Schwung, Verschieben bleibt möglich. */
   var sectorRows = document.querySelectorAll('.sector-row');
+
+  // Bilder vorab laden und dekodieren, damit beim Ziehen keine Karte erst
+  // mitten in der Bewegung nachlädt (das verursacht spürbare Ruckler)
+  document.querySelectorAll('.sector-track img').forEach(function (img) {
+    img.loading = 'eager';
+    img.decoding = 'async';
+  });
 
   sectorRows.forEach(function (row) {
     var track = row.querySelector('.sector-track');
     if (!track) return;
 
-    var speed = 22; // px pro Sekunde
+    var autoSpeed = 22; // px pro Sekunde
+    var friction = 0.0045; // Abbremsen des Schwungs pro ms (exponentiell)
     var direction = row.getAttribute('data-direction') === 'right' ? -1 : 1;
     var halfWidth = 0;
     var offset = 0;
+    var renderedOffset = null;
+    var speed = prefersReducedMotion ? 0 : autoSpeed; // aktuelle Eigenbewegung
+    var momentum = 0; // px pro ms nach dem Loslassen
     var isHovered = false;
     var isDragging = false;
+    var isVisible = true;
     var resumeAt = 0;
     var dragPointerId = null;
+    var dragPointerType = '';
     var dragStartX = 0;
     var dragStartY = 0;
     var dragStartOffset = 0;
     var dragLocked = false;
+    var samples = [];
+    var wheelUntil = 0;
     var lastTime = 0;
 
-    var wrap = function () {
-      if (halfWidth <= 0) return;
-      offset = ((offset % halfWidth) + halfWidth) % halfWidth;
+    var wrap = function (value) {
+      if (halfWidth <= 0) return value;
+      return ((value % halfWidth) + halfWidth) % halfWidth;
     };
 
     var render = function () {
-      track.style.transform = 'translate3d(' + (-offset) + 'px, 0, 0)';
+      var shown = wrap(offset);
+      if (shown === renderedOffset) return;
+      renderedOffset = shown;
+      track.style.transform = 'translate3d(' + (-shown) + 'px, 0, 0)';
     };
 
     var measure = function () {
       halfWidth = track.scrollWidth / 2;
-      wrap();
+      offset = wrap(offset);
+      renderedOffset = null;
       render();
     };
 
     var tick = function (time) {
-      var delta = lastTime ? Math.min(time - lastTime, 100) / 1000 : 0;
+      var ms = lastTime ? Math.min(time - lastTime, 64) : 0;
       lastTime = time;
-      if (!prefersReducedMotion && !isHovered && !isDragging && time >= resumeAt) {
-        offset += direction * speed * delta;
-        wrap();
-        render();
+
+      if (!isDragging) {
+        // Schwung nach dem Loslassen ausgleiten lassen
+        if (momentum !== 0) {
+          offset += momentum * ms;
+          momentum *= Math.exp(-friction * ms);
+          if (Math.abs(momentum) < 0.01) momentum = 0;
+        }
+        // Eigenbewegung weich an- und abschwellen lassen statt hart zu stoppen
+        var target = prefersReducedMotion || isHovered || time < resumeAt ? 0 : autoSpeed;
+        speed += (target - speed) * Math.min(1, ms / 350);
+        if (Math.abs(speed - target) < 0.05) speed = target;
+        offset += direction * speed * ms / 1000;
       }
+
+      if (isVisible) render();
       window.requestAnimationFrame(tick);
     };
 
-    row.addEventListener('mouseenter', function () {
-      isHovered = true;
+    // Nur echte Mäuse halten die Reihe beim Überfahren an; Touch-Geräte
+    // melden sonst nach dem Antippen dauerhaft „Hover“
+    row.addEventListener('pointerenter', function (event) {
+      if (event.pointerType === 'mouse') isHovered = true;
     });
-    row.addEventListener('mouseleave', function () {
-      isHovered = false;
+    row.addEventListener('pointerleave', function (event) {
+      if (event.pointerType === 'mouse') isHovered = false;
     });
 
+    var addSample = function (event) {
+      samples.push({ x: event.clientX, t: event.timeStamp });
+      if (samples.length > 6) samples.shift();
+    };
+
+    var startDrag = function (event) {
+      dragLocked = true;
+      // Ab der aktuellen Position weiterziehen, damit die Reihe nach der
+      // Richtungserkennung nicht um die Totzone springt
+      dragStartX = event.clientX;
+      dragStartOffset = offset;
+      samples = [];
+      addSample(event);
+      try { row.setPointerCapture(event.pointerId); } catch (e) { /* bereits beendet */ }
+      row.classList.add('is-dragging');
+    };
+
     row.addEventListener('pointerdown', function (event) {
+      if (isDragging) return;
       if (event.pointerType === 'mouse') {
         if (event.button !== 0) return;
         // Verhindert natives Ziehen/Markieren, das das Loslassen verschlucken kann
         event.preventDefault();
       }
       isDragging = true;
-      dragLocked = event.pointerType === 'mouse';
+      momentum = 0;
+      speed = 0;
+      dragLocked = false;
       dragPointerId = event.pointerId;
+      dragPointerType = event.pointerType;
       dragStartX = event.clientX;
       dragStartY = event.clientY;
       dragStartOffset = offset;
-      if (dragLocked) {
-        row.setPointerCapture(event.pointerId);
-        row.classList.add('is-dragging');
-      }
+      if (event.pointerType === 'mouse') startDrag(event);
     });
 
     row.addEventListener('pointermove', function (event) {
@@ -798,21 +850,21 @@
         endDrag(event);
         return;
       }
-      var dx = event.clientX - dragStartX;
       // Touch: erst entscheiden, ob waagerecht verschoben oder senkrecht gescrollt wird
       if (!dragLocked) {
-        if (Math.abs(dx) < 6 && Math.abs(event.clientY - dragStartY) < 6) return;
-        if (Math.abs(dx) <= Math.abs(event.clientY - dragStartY)) {
+        var mx = Math.abs(event.clientX - dragStartX);
+        var my = Math.abs(event.clientY - dragStartY);
+        if (mx < 6 && my < 6) return;
+        if (mx <= my) {
           isDragging = false;
+          resumeAt = performance.now() + 600;
           return;
         }
-        dragLocked = true;
-        row.setPointerCapture(event.pointerId);
-        row.classList.add('is-dragging');
+        startDrag(event);
+        return;
       }
-      offset = dragStartOffset - dx;
-      wrap();
-      render();
+      offset = dragStartOffset - (event.clientX - dragStartX);
+      addSample(event);
     });
 
     var endDrag = function (event) {
@@ -820,8 +872,25 @@
       isDragging = false;
       dragPointerId = null;
       row.classList.remove('is-dragging');
+
+      // Wurfgeschwindigkeit aus den letzten ~100 ms der Bewegung
+      momentum = 0;
+      if (dragLocked && !prefersReducedMotion && event && event.type === 'pointerup') {
+        var now = event.timeStamp;
+        var recent = samples.filter(function (s) { return now - s.t < 100; });
+        if (recent.length >= 2) {
+          var first = recent[0];
+          var last = recent[recent.length - 1];
+          var dt = Math.max(last.t - first.t, 8);
+          momentum = -(last.x - first.x) / dt;
+          // Sehr schnelle Würfe begrenzen
+          momentum = Math.max(-4, Math.min(4, momentum));
+        }
+      }
+      samples = [];
+
       // Nach dem Loslassen auf Touch-Geräten kurz stehen bleiben
-      resumeAt = performance.now() + (event && event.pointerType !== 'mouse' ? 1500 : 0);
+      resumeAt = performance.now() + (dragPointerType === 'mouse' ? 0 : 1500);
     };
     row.addEventListener('pointerup', endDrag);
     row.addEventListener('pointercancel', endDrag);
@@ -830,14 +899,29 @@
       endDrag();
     });
 
-    // Waagerechtes Wischen auf dem Trackpad
+    // Waagerechtes Wischen auf dem Trackpad. Hat eine Geste waagerecht
+    // begonnen, bleibt sie bei der Reihe, auch wenn einzelne Ereignisse leicht
+    // senkrecht ausschlagen; sonst springt die Seite zwischendurch nach oben
+    // oder unten.
     row.addEventListener('wheel', function (event) {
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      var now = performance.now();
+      var horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+      if (!horizontal && now > wheelUntil) return;
       event.preventDefault();
-      offset += event.deltaX;
-      wrap();
-      render();
+      wheelUntil = now + 150;
+      var factor = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? row.clientWidth : 1;
+      offset += event.deltaX * factor;
+      momentum = 0;
+      speed = 0;
+      resumeAt = now + 800;
     }, { passive: false });
+
+    // Reihen außerhalb des Sichtbereichs nicht neu zeichnen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        isVisible = entries[0].isIntersecting;
+      }).observe(row);
+    }
 
     measure();
     window.addEventListener('resize', measure);
