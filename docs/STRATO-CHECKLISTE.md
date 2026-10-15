@@ -4,7 +4,15 @@ Stand: 12.10.2026. Dieses Dokument wird **nicht** hochgeladen (per `.htaccess` z
 
 ## 1. Was auf den Webspace gehört
 
-Hochladen (Inhalt des Projektordners):
+**Empfohlen: Upload-Version bauen.** Das Build-Skript legt den Ordner `dist/` an, in dem HTML, CSS und JavaScript minifiziert sind (schwerer lesbar und kopierbar, schnellere Ladezeit) und nur Dateien liegen, die auf den Webspace gehören. Rohfotos aus `assets/Medien/`, die keine Seite verwendet, bleiben automatisch draußen. Danach den **Inhalt** von `dist/` (inkl. der versteckten `.htaccess`-Dateien) hochladen.
+
+```bash
+cd tools/build && npm install && npm run build
+```
+
+Lokal prüfen lässt sich die Upload-Version über die Preview-Konfiguration `sicura-dist` (Port 4324). Dabei entstehen in `dist/api/_intern/data/` Laufzeitdateien – vor dem Upload deshalb den Build erneut ausführen. Hinweis: HTML, CSS und JavaScript muss jeder Browser laden, minifizierter Code lässt sich also weiterhin ansehen, nur deutlich schwerer nachvollziehen.
+
+Ohne Build-Schritt gilt (Inhalt des Projektordners):
 
 - alle `*.html`, `styles.css`, `script.js`, `motion-effects.js`, `robots.txt`, `sitemap.xml`, `.htaccess`
 - `assets/` **ohne** die Rohdateien in `assets/Medien/` (siehe unten)

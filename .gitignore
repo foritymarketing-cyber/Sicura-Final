@@ -3,3 +3,7 @@
 
 # Editor / Tooling
 .claude/
+
+# Build
+dist/
+node_modules/

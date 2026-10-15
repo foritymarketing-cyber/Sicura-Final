@@ -1,0 +1,13 @@
+{
+  "name": "sicura-build",
+  "private": true,
+  "description": "Erzeugt die minifizierte Upload-Version der Website in dist/",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "html-minifier-terser": "7.2.0"
+  }
+}
