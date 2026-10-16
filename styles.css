@@ -2806,6 +2806,16 @@ a.card {
   max-width: 32ch;
 }
 
+/* Agentur-Credit unter der Anschrift: per Trennlinie und kleinerer
+   Schrift klar vom Betreiber (Impressum-Angaben) abgesetzt. */
+.footer-brand .footer-made-by {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: var(--fs-tiny);
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .footer-col h4 {
   /* rgba(.5) statt (.4): 5.3:1 gegen Schwarz, erfüllt WCAG AA 4.5:1
      für normalen Text (die Spaltentitel sind trotz klein/uppercase
