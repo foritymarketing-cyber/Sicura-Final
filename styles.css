@@ -2927,10 +2927,17 @@ a.card {
   }
 }
 
+/* Mobil: Leistungen + Unternehmen nebeneinander; Marke und Kontakt
+   (lange E-Mail-Adresse) über volle Breite. */
 @media (max-width: 560px) {
   .footer-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6) var(--space-4);
+  }
+
+  .footer-brand,
+  .footer-col:last-child {
+    grid-column: 1 / -1;
   }
 }
 
