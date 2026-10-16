@@ -734,18 +734,35 @@
       return ((value % halfWidth) + halfWidth) % halfWidth;
     };
 
+    // Verschoben wird jede Karte einzeln statt der ganzen Spur: Eine mehrere
+    // tausend Pixel breite, verschobene Spur zeichnet iOS-Safari nur in ihrem
+    // vorderen Teil, der Rest der Reihe bleibt leer. Jede Karte wird innerhalb
+    // der vollen Spurbreite umgebrochen und erscheint am Ende wieder, sobald
+    // sie links ganz hinausgelaufen ist.
+    var cards = Array.prototype.slice.call(track.children);
+    var cardLefts = [];
+    var fullWidth = 0;
+    var cardStride = 0;
+
     var render = function () {
       var shown = wrap(offset);
       if (shown === renderedOffset) return;
       renderedOffset = shown;
-      track.style.transform = 'translate3d(' + (-shown) + 'px, 0, 0)';
+      for (var i = 0; i < cards.length; i++) {
+        var left = cardLefts[i];
+        var pos = ((left - shown + cardStride) % fullWidth + fullWidth) % fullWidth - cardStride;
+        cards[i].style.transform = 'translate3d(' + (pos - left) + 'px, 0, 0)';
+      }
     };
 
     var measure = function () {
-      halfWidth = track.scrollWidth / 2;
+      fullWidth = track.scrollWidth;
+      halfWidth = fullWidth / 2;
+      cardLefts = cards.map(function (card) { return card.offsetLeft; });
+      cardStride = cards.length > 1 ? cardLefts[1] - cardLefts[0] : fullWidth;
       offset = wrap(offset);
       renderedOffset = null;
-      render();
+      if (fullWidth > 0) render();
     };
 
     var tick = function (time) {

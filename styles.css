@@ -2101,9 +2101,9 @@ a.card {
   margin: 0;
   padding: 0;
   list-style: none;
-  /* Kein will-change: translate3d aus script.js legt die Spur bereits auf
-     eine eigene Ebene; will-change lässt iOS-Safari die mehrere tausend Pixel
-     breite Spur dauerhaft komplett vorhalten und bei Speicherknappheit leer. */
+  /* Die Spur selbst bleibt stehen; script.js verschiebt jede Karte einzeln
+     (siehe dort, Grund: iOS-Safari zeichnet breite verschobene Ebenen nicht
+     vollständig). */
 }
 
 .sector-track img {
