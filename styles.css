@@ -3743,20 +3743,14 @@ a[href^="mailto:"],
 }
 
 /* ==========================================================================
-   Geräte ohne Hover (Smartphones, Tablets): Kacheltexte und Links sind
-   dauerhaft sichtbar statt nur bei Hover/Berührung.
+   Geräte ohne Hover (Smartphones, Tablets): Kacheltexte erscheinen erst beim
+   Darüberwischen (`.is-touch-active`, script.js); unten Platz für das
+   KI-Label lassen.
    ========================================================================== */
 
 @media (hover: none), (pointer: coarse) {
   .card--media .card-body {
-    background: rgba(0, 0, 0, 0.7);
     padding-bottom: 48px;
-  }
-
-  .card--media .card-body p,
-  .card--media .card-body .card-link {
-    opacity: 1;
-    transform: none;
   }
 }
 
