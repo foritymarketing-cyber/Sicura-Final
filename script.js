@@ -717,6 +717,8 @@
     var isDragging = false;
     var isVisible = true;
     var resumeAt = 0;
+    var touchRestPause = 2000; // ms Stillstand nach dem Loslassen per Finger
+    var pauseAfterGlide = false;
     var dragPointerId = null;
     var dragPointerType = '';
     var dragStartX = 0;
@@ -756,6 +758,11 @@
           offset += momentum * ms;
           momentum *= Math.exp(-friction * ms);
           if (Math.abs(momentum) < 0.01) momentum = 0;
+        }
+        // Nach dem Ausgleiten ab dem Stillstand die volle Pause halten
+        if (pauseAfterGlide && momentum === 0) {
+          pauseAfterGlide = false;
+          resumeAt = time + touchRestPause;
         }
         // Eigenbewegung weich an- und abschwellen lassen statt hart zu stoppen
         var target = prefersReducedMotion || isHovered || time < resumeAt ? 0 : autoSpeed;
@@ -803,6 +810,7 @@
       }
       isDragging = true;
       momentum = 0;
+      pauseAfterGlide = false;
       speed = 0;
       dragLocked = false;
       dragPointerId = event.pointerId;
@@ -860,8 +868,16 @@
       }
       samples = [];
 
-      // Nach dem Loslassen auf Touch-Geräten kurz stehen bleiben
-      resumeAt = performance.now() + (dragPointerType === 'mouse' ? 0 : 1500);
+      // Nach dem Loslassen per Finger 2 s stehen bleiben; gleitet die Reihe
+      // mit Schwung aus, zählen die 2 s erst ab dem Stillstand
+      if (dragPointerType === 'mouse') {
+        resumeAt = performance.now();
+      } else if (momentum !== 0) {
+        pauseAfterGlide = true;
+        resumeAt = Infinity;
+      } else {
+        resumeAt = performance.now() + touchRestPause;
+      }
     };
     row.addEventListener('pointerup', endDrag);
     row.addEventListener('pointercancel', endDrag);
@@ -883,6 +899,7 @@
       var factor = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? row.clientWidth : 1;
       offset += event.deltaX * factor;
       momentum = 0;
+      pauseAfterGlide = false;
       speed = 0;
       resumeAt = now + 800;
     }, { passive: false });
