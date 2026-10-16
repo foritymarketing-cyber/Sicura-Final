@@ -821,8 +821,14 @@
       row.classList.add('is-dragging');
     };
 
+    // Finger laufen über Touch-Events (siehe unten): iOS-Safari übernimmt
+    // eine leicht schräge Wischgeste sonst als Seiten-Scroll und bricht die
+    // Pointer-Events ab, bevor die Reihe sich bewegt
+    var useTouchEvents = 'ontouchstart' in window;
+
     row.addEventListener('pointerdown', function (event) {
       if (isDragging) return;
+      if (useTouchEvents && event.pointerType === 'touch') return;
       if (event.pointerType === 'mouse') {
         if (event.button !== 0) return;
         // Verhindert natives Ziehen/Markieren, das das Loslassen verschlucken kann
@@ -900,6 +906,83 @@
       }
     };
     row.addEventListener('pointerup', endDrag);
+
+    // Touch: Beim ersten Bewegen entscheiden, ob waagerecht verschoben oder
+    // senkrecht gescrollt wird. Nur ein sofort abgefangenes touchmove hält
+    // iOS-Safari vom Scrollen ab; danach folgt die Reihe dem Finger.
+    var touchId = null;
+    var touchDecided = false;
+    var touchPoint = function (event) {
+      for (var i = 0; i < event.changedTouches.length; i++) {
+        if (event.changedTouches[i].identifier === touchId) return event.changedTouches[i];
+      }
+      return null;
+    };
+    var touchEvent = function (event, touch) {
+      return { clientX: touch.clientX, clientY: touch.clientY, timeStamp: event.timeStamp, pointerId: 'touch', type: event.type };
+    };
+
+    if (useTouchEvents) {
+      row.addEventListener('touchstart', function (event) {
+        if (event.touches.length > 1) {
+          // Zweiter Finger (z. B. Zoomen): Ziehen abbrechen
+          if (isDragging) endDrag({ pointerId: 'touch', type: 'touchcancel' });
+          touchId = null;
+          return;
+        }
+        if (isDragging) return;
+        var touch = event.changedTouches[0];
+        touchId = touch.identifier;
+        touchDecided = false;
+        isDragging = true;
+        momentum = 0;
+        pauseAfterGlide = false;
+        speed = 0;
+        dragLocked = false;
+        dragPointerId = 'touch';
+        dragPointerType = 'touch';
+        dragStartX = touch.clientX;
+        dragStartY = touch.clientY;
+        dragStartOffset = offset;
+      }, { passive: true });
+
+      row.addEventListener('touchmove', function (event) {
+        if (!isDragging || dragPointerId !== 'touch') return;
+        var touch = touchPoint(event);
+        if (!touch) return;
+        if (!touchDecided) {
+          var mx = Math.abs(touch.clientX - dragStartX);
+          var my = Math.abs(touch.clientY - dragStartY);
+          if (mx === 0 && my === 0) return;
+          touchDecided = true;
+          if (mx <= my) {
+            // Senkrecht: Seite scrollen lassen
+            isDragging = false;
+            dragPointerId = null;
+            resumeAt = performance.now() + 600;
+            return;
+          }
+          event.preventDefault();
+          startDrag(touchEvent(event, touch));
+          return;
+        }
+        event.preventDefault();
+        offset = dragStartOffset - (touch.clientX - dragStartX);
+        addSample(touchEvent(event, touch));
+      }, { passive: false });
+
+      var endTouch = function (event) {
+        var touch = touchPoint(event);
+        if (!touch) return;
+        touchId = null;
+        // Wurfschwung wie bei pointerup berechnen
+        var e = touchEvent(event, touch);
+        if (event.type === 'touchend') e.type = 'pointerup';
+        endDrag(e);
+      };
+      row.addEventListener('touchend', endTouch);
+      row.addEventListener('touchcancel', endTouch);
+    }
     row.addEventListener('pointercancel', endDrag);
     row.addEventListener('lostpointercapture', endDrag);
     window.addEventListener('blur', function () {
