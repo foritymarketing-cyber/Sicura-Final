@@ -33,6 +33,7 @@ defined('MAIL_FROM') || define('MAIL_FROM', 'info@sicura-sicherheitstechnik.de')
 defined('MAIL_FROM_NAME') || define('MAIL_FROM_NAME', 'Sicura Website');
 
 const CAPTCHA_TTL = 1800;         // Sekunden, wie lange ein Puzzle gültig ist
+const CAPTCHA_SOLVED_TTL = 900;   // Sekunden, wie lange ein gelöstes Puzzle zum Absenden reicht
 const CAPTCHA_TOLERANCE = 14;     // Pixel (bei 720 px Bildbreite)
 const SUBMIT_LIMIT = 5;           // max. Anfragen pro Sitzung und Stunde
 const IP_SUBMIT_LIMIT = 10;       // max. Formularversuche pro IP und Stunde
@@ -151,12 +152,11 @@ function rate_limit(string $action, int $limit): bool
     flock($handle, LOCK_UN);
     fclose($handle);
 
-    // Gelegentlich alte Dateien aufräumen
-    if (random_int(1, 50) === 1) {
-        foreach (glob(RATE_DIR . '/rl-*.json') ?: [] as $old) {
-            if (@filemtime($old) < $now - 3600) {
-                @unlink($old);
-            }
+    // Abgelaufene Prüfwerte anderer Besucher löschen (wie in der
+    // Datenschutzerklärung beschrieben: nach einer Stunde)
+    foreach (glob(RATE_DIR . '/rl-*.json') ?: [] as $old) {
+        if ($old !== $file && @filemtime($old) < $now - 3600) {
+            @unlink($old);
         }
     }
     return $allowed;

@@ -101,7 +101,8 @@ if ($errors) {
 // Captcha muss in dieser Sitzung gelöst worden sein und wird danach verbraucht
 $captcha = $_SESSION['captcha'] ?? null;
 unset($_SESSION['captcha']);
-if (!is_array($captcha) || empty($captcha['solved']) || time() - $captcha['issued'] > CAPTCHA_TTL) {
+if (!is_array($captcha) || empty($captcha['solved']) || time() - $captcha['issued'] > CAPTCHA_TTL
+    || time() - (int) ($captcha['solved_at'] ?? 0) > CAPTCHA_SOLVED_TTL) {
     send_json(400, ['ok' => false, 'captcha' => true, 'error' => 'Bitte lösen Sie die Sicherheitsprüfung erneut.']);
 }
 

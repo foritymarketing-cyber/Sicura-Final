@@ -81,6 +81,30 @@
     );
   }
 
+  /* ---- Hero-Video: Pause-/Abspielknopf (WCAG 2.2.2), Zustand ändert
+     sich nur durch den Knopf, nicht durch Scrollen. */
+  var heroToggle = document.querySelector('.hero-video-toggle');
+
+  if (heroVideo && heroToggle) {
+    var syncHeroToggle = function () {
+      var paused = heroVideo.paused;
+      heroToggle.classList.toggle('is-paused', paused);
+      heroToggle.setAttribute('aria-label', paused ? 'Video abspielen' : 'Video anhalten');
+    };
+    heroToggle.hidden = false;
+    heroToggle.addEventListener('click', function () {
+      if (heroVideo.paused) {
+        var playing = heroVideo.play();
+        if (playing && playing.catch) playing.catch(function () {});
+      } else {
+        heroVideo.pause();
+      }
+    });
+    heroVideo.addEventListener('play', syncHeroToggle);
+    heroVideo.addEventListener('pause', syncHeroToggle);
+    syncHeroToggle();
+  }
+
   /* ---- Kachel-Videos: bei reduzierter Bewegung auf die Explosionsansicht
      (Sekunde 6) springen und dort anhalten. */
   if (prefersReducedMotion) {

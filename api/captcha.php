@@ -171,6 +171,7 @@ function verify(): void
     // Unter einer Sekunde löst das kein Mensch
     $solved = abs($x - $captcha['x']) <= CAPTCHA_TOLERANCE && time() - $captcha['issued'] >= 1;
     $_SESSION['captcha']['solved'] = $solved;
+    $_SESSION['captcha']['solved_at'] = time();
     if (!$solved) {
         unset($_SESSION['captcha']);
     }
