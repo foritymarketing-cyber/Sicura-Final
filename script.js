@@ -756,10 +756,13 @@
     };
 
     var measure = function () {
-      fullWidth = track.scrollWidth;
-      halfWidth = fullWidth / 2;
+      // Länge der Schleife aus den Kartenpositionen statt aus der Spurbreite:
+      // Safari misst die Spur (width: max-content) teils breiter als ihre
+      // Karten, dann startet eine Reihe im leeren Bereich und wirkt zu Ende.
       cardLefts = cards.map(function (card) { return card.offsetLeft; });
-      cardStride = cards.length > 1 ? cardLefts[1] - cardLefts[0] : fullWidth;
+      cardStride = cards.length > 1 ? cardLefts[1] - cardLefts[0] : track.scrollWidth;
+      fullWidth = cardStride * cards.length;
+      halfWidth = fullWidth / 2;
       offset = wrap(offset);
       renderedOffset = null;
       if (fullWidth > 0) render();

@@ -2113,6 +2113,9 @@ a.card {
 
 .sector-card {
   flex: 0 0 var(--sector-card-width);
+  /* Feste Breite zusätzlich zu flex-basis, sonst rechnet Safari bei der
+     Spurbreite die einzeilige Breite langer Titel mit ein */
+  width: var(--sector-card-width);
   margin-right: var(--sector-card-gap);
   display: flex;
   flex-direction: column;
