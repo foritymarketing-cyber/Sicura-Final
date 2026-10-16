@@ -2044,7 +2044,10 @@ a.card {
 /* Drei Laufbänder: obere und untere Reihe laufen nach rechts, die mittlere
    nach links (Bewegung per script.js). Jede Spur besteht aus zwei gleichen
    Hälften, damit die Schleife nahtlos ist. Beim Überfahren hält eine Reihe an
-   und lässt sich mit Maus, Trackpad oder Finger seitlich verschieben. */
+   und lässt sich mit Maus, Trackpad oder Finger seitlich verschieben.
+   Bewusst ohne data-reveal: Läuft die Einblend-Animation (fill-mode forwards)
+   auf einem Vorfahren der verschobenen Spuren, zeichnet iOS-Safari die
+   breiten Spuren nach dem Verschieben nicht neu und die Reihen bleiben leer. */
 .sector-marquee {
   --sector-card-width: clamp(250px, 72vw, 300px);
   --sector-card-gap: var(--space-4);
@@ -2098,7 +2101,9 @@ a.card {
   margin: 0;
   padding: 0;
   list-style: none;
-  will-change: transform;
+  /* Kein will-change: translate3d aus script.js legt die Spur bereits auf
+     eine eigene Ebene; will-change lässt iOS-Safari die mehrere tausend Pixel
+     breite Spur dauerhaft komplett vorhalten und bei Speicherknappheit leer. */
 }
 
 .sector-track img {
