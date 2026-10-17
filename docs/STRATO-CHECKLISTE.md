@@ -77,7 +77,7 @@ Fehlgeschlagener Mailversand: lokal getestet (Fehlermeldung mit Telefonnummer, P
 
 | Datei | Verwendung | Art | Kennzeichnung |
 |---|---|---|---|
-| `hero-video.mp4`, `hero-video-720.mp4`, `hero-poster.jpg` | Startseite Hero | KI-generiert | „KI-generiertes Video“ am Video |
+| `hero-video.mp4`, `hero-poster.jpg` | Startseite Hero | KI-generiert | „KI-generiertes Video“ am Video |
 | `leistungen-videoueberwachung-hover.mp4` (+ Poster) | Kacheln Start/Leistungen | KI-generiert | „KI-generiertes Video“ |
 | `leistungen-einbruchmeldeanlagen-hover.mp4` (+ Poster) | Kacheln Start/Leistungen | KI-generiert | „KI-generiertes Video“ |
 | `solution-kamera-fassade.png` | Startseite „Ihr Weg zu uns“ | KI-generiert | „KI-generiertes Symbolbild“ |

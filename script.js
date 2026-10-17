@@ -64,8 +64,7 @@
   }
 
   /* ---- Hero-Video: bei reduzierter Bewegung als Standbild anhalten ----
-     Die ersten Sekunden zeigen nur das Logo-Intro, daher wird auf ein
-     aussagekräftiges Motiv (Sekunde 5, entspricht dem Poster) gesprungen. */
+     Das erste Bild (entspricht dem Poster) bleibt stehen. */
   var heroVideo = document.querySelector('.hero-video');
 
   if (heroVideo && prefersReducedMotion) {
@@ -75,7 +74,7 @@
       'loadeddata',
       function () {
         heroVideo.pause();
-        heroVideo.currentTime = 5;
+        heroVideo.currentTime = 0;
       },
       { once: true }
     );
