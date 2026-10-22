@@ -1048,6 +1048,67 @@
     window.requestAnimationFrame(tick);
   });
 
+  /* ---- Referenzprojekte: Karte im Laufband öffnet das Projekt im Dialog ----
+     Das Laufband fängt Zeiger-Ereignisse fürs Ziehen ab (Pointer-Capture),
+     deshalb kommt ein normales click nicht verlässlich an der Karte an. Als
+     Klick zählt hier ein Antippen/Klicken, bei dem sich der Zeiger kaum
+     bewegt hat; die Karte wird über die Position ermittelt. Tastatur läuft
+     über den Button „Projekt ansehen“ (click mit detail 0). */
+  var projectDialog = document.getElementById('project-dialog');
+  var sectorMarquee = document.querySelector('[data-marquee]');
+  if (projectDialog && sectorMarquee && typeof projectDialog.showModal === 'function') {
+    var openProject = function (key, byPointer) {
+      var article = document.getElementById('projekt-' + key);
+      if (!article) return;
+      projectDialog.querySelectorAll('.project-featured').forEach(function (el) {
+        el.hidden = el !== article;
+      });
+      projectDialog.setAttribute('aria-labelledby', 'projekt-' + key + '-titel');
+      projectDialog.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      projectDialog.showModal();
+      // Per Maus/Finger geöffnet: Fokus auf den Dialog statt auf den
+      // Schließen-Button, damit dort kein Fokusring aufblitzt
+      if (byPointer) projectDialog.focus();
+    };
+
+    var tap = null;
+    sectorMarquee.addEventListener('pointerdown', function (event) {
+      tap = event.isPrimary && event.button === 0
+        ? { id: event.pointerId, x: event.clientX, y: event.clientY, t: event.timeStamp }
+        : null;
+    }, true);
+    document.addEventListener('pointerup', function (event) {
+      if (!tap || event.pointerId !== tap.id) return;
+      var moved = Math.abs(event.clientX - tap.x) + Math.abs(event.clientY - tap.y);
+      var held = event.timeStamp - tap.t;
+      tap = null;
+      if (moved > 8 || held > 600) return;
+      var target = document.elementFromPoint(event.clientX, event.clientY);
+      var card = target && target.closest('.sector-card[data-project]');
+      if (card && sectorMarquee.contains(card)) openProject(card.getAttribute('data-project'), true);
+    }, true);
+    document.addEventListener('pointercancel', function () { tap = null; }, true);
+
+    sectorMarquee.addEventListener('click', function (event) {
+      var button = event.target.closest('button.sector-card-more');
+      if (button && event.detail === 0) {
+        openProject(button.closest('.sector-card').getAttribute('data-project'));
+      }
+    });
+
+    projectDialog.querySelector('.project-dialog-close').addEventListener('click', function () {
+      projectDialog.close();
+    });
+    // Klick auf den abgedunkelten Hintergrund schließt den Dialog
+    projectDialog.addEventListener('click', function (event) {
+      if (event.target === projectDialog) projectDialog.close();
+    });
+    projectDialog.addEventListener('close', function () {
+      document.body.style.overflow = '';
+    });
+  }
+
   /* ---- Aktuelles Jahr im Footer ---- */
   var yearEls = document.querySelectorAll('[data-current-year]');
   yearEls.forEach(function (el) {

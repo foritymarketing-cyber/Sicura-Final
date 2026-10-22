@@ -2171,6 +2171,168 @@ a.card {
   color: var(--color-text-muted);
 }
 
+/* Referenzprojekte (Referenzen): Karte im Laufband anklicken öffnet das
+   Projekt mit Ausgangslage, Lösung und Nutzen im Dialog */
+.sector-card[data-project] {
+  cursor: pointer;
+}
+
+.sector-card-more {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: var(--space-3);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sector-card-more::after {
+  content: ' +';
+}
+
+.sector-card-more:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.project-dialog {
+  /* Mittig im Fenster: margin auto, das der Reset (* { margin: 0 }) sonst aufhebt */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(960px, calc(100% - 32px));
+  height: fit-content;
+  max-height: calc(100% - 32px);
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.project-dialog:focus {
+  outline: none;
+}
+
+.project-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.project-dialog-close {
+  position: sticky;
+  top: var(--space-3);
+  z-index: 3;
+  float: right;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: var(--space-3) var(--space-3) -52px 0;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: rgba(10, 10, 11, 0.8);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.project-dialog-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.project-dialog-close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.project-media {
+  position: relative;
+  aspect-ratio: 16 / 6;
+  background: var(--color-surface-raised);
+}
+
+.project-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-featured-body {
+  padding: var(--space-6);
+}
+
+.project-featured-body h2 {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: var(--fs-h3);
+}
+
+.project-tag {
+  display: inline-block;
+  margin: 0;
+  padding: 0.25em 0.9em;
+  border: 1px solid var(--color-accent-dim);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: var(--fs-tiny);
+  line-height: 1.5;
+}
+
+.project-teaser {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.project-cols {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.project-label {
+  margin: 0 0 var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--fs-tiny);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-col p {
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 599px) {
+  .project-media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .project-featured-body {
+    padding: var(--space-5);
+  }
+}
+
+@media (min-width: 900px) {
+  .project-cols {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+}
+
 /* Hinweis zur Diskretion unter dem Raster */
 .discretion-note {
   display: flex;

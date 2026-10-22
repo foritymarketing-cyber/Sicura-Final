@@ -38,6 +38,17 @@ ErrorDocument 403 /404.html
   # ---- Alte Leistungs-Adressen (/leistungen/xyz) dauerhaft umleiten ----
   RewriteRule ^leistungen/(videoueberwachung|einbruchmeldeanlagen|service-wartung|verdeckte-videoueberwachung|kurzeinsaetze)/?$ /leistungen-$1 [R=301,L]
 
+  # ---- Adressen der alten Website dauerhaft umleiten ----
+  RewriteRule ^videoueberwachung/?$ /leistungen-videoueberwachung [R=301,L]
+  RewriteRule ^alarmanlagen/?$ /leistungen-einbruchmeldeanlagen [R=301,L]
+  RewriteRule ^kontaktformular/?$ /kontakt [R=301,L]
+
+  # ---- Schrägstrich am Ende entfernen (/impressum/ → /impressum) ----
+  # Sonst lädt die Seite ohne Styles, weil relative Pfade (styles.css,
+  # assets/…) dann unter /impressum/ gesucht werden.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
   # ---- Aufrufe mit .html dauerhaft auf die Adresse ohne Endung umleiten ----
   # /index.html → /, /kontakt.html → /kontakt (Query-String bleibt erhalten).
   # THE_REQUEST prüft die Original-Anfrage, damit die interne Umschreibung
@@ -76,9 +87,10 @@ ErrorDocument 403 /404.html
   # 'unsafe-inline' nur für style-Attribute im Markup (keine Inline-Skripte).
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
-  # HSTS erst aktivieren, wenn HTTPS (inkl. www und ohne www) zuverlässig
-  # funktioniert. Danach die Raute entfernen:
-  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+  # HSTS: HTTPS mit und ohne www geprüft (gültiges Zertifikat für beide,
+  # Weiterleitung auf https://www). Bewusst ohne includeSubDomains, damit
+  # eventuelle andere Subdomains ohne Zertifikat erreichbar bleiben.
+  Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
 
   # Keine Zwischenspeicherung der API-Antworten
   <FilesMatch "\.php$">
