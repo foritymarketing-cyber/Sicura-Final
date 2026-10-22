@@ -82,13 +82,15 @@ if (!isset($errors['name']) && mb_strlen($name) < 2) {
 if (!isset($errors['email']) && filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     $errors['email'] = 'Bitte prüfen Sie Ihre E-Mail-Adresse.';
 }
-if (!isset($errors['phone']) && $phone !== '' && !preg_match('/^[0-9+()\/\-\s.]{3,50}$/', $phone)) {
+if (!isset($errors['phone']) && $phone === '') {
+    $errors['phone'] = 'Bitte tragen Sie Ihre Telefonnummer ein.';
+} elseif (!isset($errors['phone']) && !preg_match('/^[0-9+()\/\-\s.]{3,50}$/', $phone)) {
     $errors['phone'] = 'Bitte prüfen Sie Ihre Telefonnummer.';
 }
 if ($topic !== '' && !isset(TOPICS[$topic])) {
     $topic = '';
 }
-if (!isset($errors['message']) && mb_strlen($message) < 10) {
+if (!isset($errors['message']) && $message === '') {
     $errors['message'] = 'Bitte schreiben Sie uns kurz, worum es geht.';
 }
 if (!$consent) {
@@ -122,7 +124,7 @@ $body = implode("\n", [
     '',
     'Name:     ' . $name,
     'E-Mail:   ' . $email,
-    'Telefon:  ' . ($phone !== '' ? $phone : 'nicht angegeben'),
+    'Telefon:  ' . $phone,
     'Anliegen: ' . $topicLabel,
     '',
     'Nachricht:',

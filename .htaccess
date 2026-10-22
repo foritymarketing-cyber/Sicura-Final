@@ -38,6 +38,15 @@ ErrorDocument 403 /404.html
   # ---- Alte Leistungs-Adressen (/leistungen/xyz) dauerhaft umleiten ----
   RewriteRule ^leistungen/(videoueberwachung|einbruchmeldeanlagen|service-wartung|verdeckte-videoueberwachung|kurzeinsaetze)/?$ /leistungen-$1 [R=301,L]
 
+  # ---- Aufrufe mit .html dauerhaft auf die Adresse ohne Endung umleiten ----
+  # /index.html → /, /kontakt.html → /kontakt (Query-String bleibt erhalten).
+  # THE_REQUEST prüft die Original-Anfrage, damit die interne Umschreibung
+  # unten keine Schleife auslöst.
+  RewriteCond %{THE_REQUEST} \s/+index\.html[?\s] [NC]
+  RewriteRule ^index\.html$ / [R=301,L]
+  RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html[?\s] [NC]
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
   # ---- .html-Adressen ohne Endung ausliefern ----
   # Clean URLs: /kontakt liefert kontakt.html aus
   RewriteCond %{REQUEST_FILENAME} !-f

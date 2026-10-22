@@ -2450,6 +2450,11 @@ a.card {
   font-weight: 400;
 }
 
+.form-checkbox label a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .form-status {
   display: none;
   align-items: center;

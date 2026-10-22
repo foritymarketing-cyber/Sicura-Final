@@ -18,23 +18,23 @@
   <header class="site-header">
     <div class="nav-progress" aria-hidden="true"></div>
     <div class="container">
-      <a class="brand" href="index.html">
+      <a class="brand" href="/">
         <img class="brand-logo" src="assets/Medien/sicura-logo_1.svg" alt="Sicura Sicherheitstechnik" width="1200" height="467">
       </a>
 
       <nav class="nav-desktop" id="nav-desktop" aria-label="Hauptnavigation">
         <ul class="nav-links">
-          <li><a href="index.html">Start</a></li>
-          <li><a href="leistungen.html">Leistungen</a></li>
-          <li><a href="ueber-uns.html">Über uns</a></li>
-          <li><a href="referenzen.html">Referenzen</a></li>
-          <li><a href="ratgeber.html">Ratgeber</a></li>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a href="kontakt.html" aria-current="page">Kontakt</a></li>
+          <li><a href="/">Start</a></li>
+          <li><a href="/leistungen">Leistungen</a></li>
+          <li><a href="/ueber-uns">Über uns</a></li>
+          <li><a href="/referenzen">Referenzen</a></li>
+          <li><a href="/ratgeber">Ratgeber</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/kontakt" aria-current="page">Kontakt</a></li>
         </ul>
       </nav>
 
-      <a class="btn btn-primary nav-cta" href="kontakt.html">Kostenlos beraten lassen</a>
+      <a class="btn btn-primary nav-cta" href="/kontakt">Kostenlos beraten lassen</a>
 
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-desktop" aria-label="Menü öffnen">
         <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-menu"></use></svg>
@@ -122,8 +122,9 @@
             </div>
 
             <div class="form-row">
-              <label for="phone">Telefon <span class="optional">(optional)</span></label>
-              <input type="tel" id="phone" name="phone" autocomplete="tel">
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+              <p class="field-error" role="alert"></p>
             </div>
 
             <div class="form-row">
@@ -147,9 +148,10 @@
             </div>
 
             <div class="form-row">
+              <p style="font-size:var(--fs-tiny); color:var(--color-text-faint); margin:0 0 var(--space-3)">Wir verwenden Ihre Angaben zur Bearbeitung Ihrer Anfrage. Informationen zur Verarbeitung und zu eingesetzten Dienstleistern finden Sie in unseren <a href="/datenschutz">Datenschutzhinweisen</a>.</p>
               <div class="form-checkbox">
                 <input type="checkbox" id="consent" name="consent" required>
-                <label for="consent">Ich habe die <a href="datenschutz.html">Datenschutzhinweise</a> zur Kenntnis genommen.</label>
+                <label for="consent">Ich habe die <a href="/datenschutz">Datenschutzhinweise</a> zur Kenntnis genommen.</label>
               </div>
               <p class="field-error" role="alert"></p>
             </div>
@@ -179,7 +181,6 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg btn-block">Anfrage senden</button>
-            <p style="font-size:var(--fs-tiny); color:var(--color-text-faint); margin-top:var(--space-3)">Wir verwenden Ihre Angaben zur Bearbeitung Ihrer Anfrage. Informationen zur Verarbeitung und zu eingesetzten Dienstleistern finden Sie in unseren <a href="datenschutz.html">Datenschutzhinweisen</a>.</p>
 
             <div class="form-status" role="status" aria-live="polite"></div>
           </form>
@@ -193,7 +194,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="brand" href="index.html">
+          <a class="brand" href="/">
             <img class="brand-logo" src="assets/Medien/sicura-logo_1.svg" alt="Sicura Sicherheitstechnik" width="1200" height="467">
           </a>
           <p>Sicura Sicherheitstechnik<br>Angela Foggia<br>Am Steinberg 4<br>55278 Dalheim</p>
@@ -203,23 +204,23 @@
         <div class="footer-col">
           <h4>Leistungen</h4>
           <ul>
-            <li><a href="leistungen.html">Übersicht</a></li>
-            <li><a href="leistungen-videoueberwachung.html">Videoüberwachung</a></li>
-            <li><a href="leistungen-einbruchmeldeanlagen.html">Einbruchmeldeanlagen</a></li>
-            <li><a href="leistungen-service-wartung.html">Service &amp; Wartung</a></li>
-            <li><a href="leistungen-verdeckte-videoueberwachung.html">Verdeckte Videoüberwachung</a></li>
-            <li><a href="leistungen-kurzeinsaetze.html">Kurzeinsätze &amp; Miete</a></li>
+            <li><a href="/leistungen">Übersicht</a></li>
+            <li><a href="/leistungen-videoueberwachung">Videoüberwachung</a></li>
+            <li><a href="/leistungen-einbruchmeldeanlagen">Einbruchmeldeanlagen</a></li>
+            <li><a href="/leistungen-service-wartung">Service &amp; Wartung</a></li>
+            <li><a href="/leistungen-verdeckte-videoueberwachung">Verdeckte Videoüberwachung</a></li>
+            <li><a href="/leistungen-kurzeinsaetze">Kurzeinsätze &amp; Miete</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Unternehmen</h4>
           <ul>
-            <li><a href="ueber-uns.html">Über uns</a></li>
-            <li><a href="referenzen.html">Referenzen</a></li>
-            <li><a href="partner.html">Partner</a></li>
-            <li><a href="faq.html">Häufige Fragen</a></li>
-            <li><a href="ratgeber.html">Ratgeber</a></li>
+            <li><a href="/ueber-uns">Über uns</a></li>
+            <li><a href="/referenzen">Referenzen</a></li>
+            <li><a href="/partner">Partner</a></li>
+            <li><a href="/faq">Häufige Fragen</a></li>
+            <li><a href="/ratgeber">Ratgeber</a></li>
           </ul>
         </div>
 
@@ -228,8 +229,8 @@
           <ul>
             <li><a href="tel:+4962499379999">06249 937 9999</a></li>
             <li><a href="mailto:info@sicura-sicherheitstechnik.de">info@sicura-sicherheitstechnik.de</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
+            <li><a href="/impressum">Impressum</a></li>
+            <li><a href="/datenschutz">Datenschutz</a></li>
             <li><a href="https://facebook.com/Sicura.Sicherheitstechnik" target="_blank" rel="noopener noreferrer">Facebook</a></li>
           </ul>
         </div>

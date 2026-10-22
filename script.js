@@ -404,8 +404,13 @@
         var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return pattern.test(value.trim()) ? '' : 'Bitte prüfen Sie Ihre E-Mail-Adresse.';
       },
+      phone: function (value) {
+        var trimmed = value.trim();
+        if (!trimmed) return 'Bitte tragen Sie Ihre Telefonnummer ein.';
+        return /^[0-9+()\/\-\s.]{3,50}$/.test(trimmed) ? '' : 'Bitte prüfen Sie Ihre Telefonnummer.';
+      },
       message: function (value) {
-        return value.trim().length >= 10 ? '' : 'Bitte schreiben Sie uns kurz, worum es geht.';
+        return value.trim().length >= 1 ? '' : 'Bitte schreiben Sie uns kurz, worum es geht.';
       },
       consent: function (checked) {
         return checked ? '' : 'Bitte bestätigen Sie, dass Sie die Datenschutzhinweise gelesen haben.';
@@ -437,7 +442,7 @@
       return !message;
     }
 
-    ['name', 'email', 'message', 'consent'].forEach(function (fieldName) {
+    ['name', 'email', 'phone', 'message', 'consent'].forEach(function (fieldName) {
       var field = form.elements[fieldName];
       if (!field) return;
       var eventName = field.type === 'checkbox' ? 'change' : 'blur';
@@ -632,7 +637,7 @@
     form.addEventListener('submit', function (event) {
       event.preventDefault();
 
-      var fieldsToValidate = ['name', 'email', 'message', 'consent'];
+      var fieldsToValidate = ['name', 'email', 'phone', 'message', 'consent'];
       var isValid = true;
       var firstInvalid = null;
 
@@ -687,7 +692,7 @@
         .then(function (response) { return response.json(); })
         .then(function (result) {
           if (result && result.ok) {
-            window.location.href = 'danke.html';
+            window.location.href = '/danke';
             return;
           }
           if (result && result.fields) {
