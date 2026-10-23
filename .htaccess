@@ -39,10 +39,33 @@ ErrorDocument 403 /404.html
   # Auch mit /index.html am Ende, so wie die alte Website verlinkt war.
   RewriteRule ^leistungen/(videoueberwachung|einbruchmeldeanlagen|service-wartung|verdeckte-videoueberwachung|kurzeinsaetze)(/(index\.html?)?)?$ /leistungen-$1 [R=301,L]
 
-  # ---- Adressen der alten Website dauerhaft umleiten ----
-  RewriteRule ^videoueberwachung(/(index\.html?)?)?$ /leistungen-videoueberwachung [R=301,L,NC]
-  RewriteRule ^alarmanlagen(/(index\.html?)?)?$ /leistungen-einbruchmeldeanlagen [R=301,L,NC]
-  RewriteRule ^kontaktformular(/(index\.html?)?)?$ /kontakt [R=301,L,NC]
+  # ---- Adressen der alten WordPress-Website dauerhaft umleiten ----
+  # Liste aus dem Internet Archive (Stand 23.10.2026). Thematisch passende
+  # Seiten auf die passende Seite, alles ohne Entsprechung auf die Startseite.
+  # Bewusst nur bekannte Adressen, keine Sammelregel: echte Tippfehler sollen
+  # weiter eine 404 liefern. Auch mit /index.html am Ende.
+  # Der lokale Vorschau-Router (.claude/php-router.php) liest diesen Block ein.
+  # Vermietung → Kurzeinsätze
+  RewriteRule ^(sicherheitstechnik-auf-mietbasis|technik-auf-mietbasis|technik-auf-mietbasis-verleih|ueberwachungs-technik-kamera-kaufen-mieten-leihen|videoueberwachung-leasing-kaufen-mieten-leihen|videoueberwachung-mieten-leihen|videoueberwachung-und-sicherheitstechnik-auf-mietbasis|vermietung-verleih-von-videoueberwachungstechnik-[^/]*)(/(index\.html?)?)?$ /leistungen-kurzeinsaetze [R=301,L,NC]
+  # Verdeckte Videoüberwachung
+  RewriteRule ^(verdeckte-videoueberwachung|vedeckte-videoueberwachung|verdeckte-ueberwachungskamera|verdeckte-videoueberwachung-am-arbeitsplatz|mitarbeiterueberwachung-verdeckte-kameraueberwachung|heimliche-mitarbeiterueberwachung-am-arbeitsplatz|kameraueberwachung-am-arbeitsplatz)(/(index\.html?)?)?$ /leistungen-verdeckte-videoueberwachung [R=301,L,NC]
+  # Videoüberwachung
+  RewriteRule ^(videoueberwachung|videoueberwachung-2|videoueberwachung-alarmtechnik-in-wiesbaden|videoueberwachung-einbau-in-frankurt-und-umgebung|videoueberwachung-frankfurt-mainz-darmstadt-worms-hanau|videoueberwachung-fuer-jedermann|videoueberwachung-fuer-mehr-schutz-und-besseren-ueberblick|videoueberwachung-in-frankfurt|videoueberwachung-installation|videoueberwachung-installation-2|videoueberwachung-installation-frankfurt|videoueberwachung-kameraueberwachung|videoueberwachung-kameraueberwachung-2|videoueberwachung-kameraueberwachung-vom-fachmann|videoueberwachung-mit-handy-app|videoueberwachung-neuheiten-2017|videoueberwachung-neuheiten-2020|videoueberwachung-richtig-kaufen|videoueberwachung-videoueberwachung-in-mainz|videoueberwachung-videoueberwachungstechnik|4k-ultra-hd-ueberwachungstechnik-zum-bezahlbaren-preis|analoge-videoueberwachung|bester-service-videoueberwachung|hd-sdi-technik|hd-sdi-ueberwachungskamera-ip-kamera|hd-videoueberwachung|high-end-videoueberwachung-vom-fachhandel|hikvision-5mp-tvi-kamera|installation-videoueberwachung|installation-von-videoueberwachung-kameraueberwachung|ip-kamera-hd-sdi-kamera-vom-fachmann|kamerainstallation-kameraeinbau|kameraueberwachung-einbau|kameraueberwachung-einbau-2|kameraueberwachung-kaufen|mini-ueberwachungskamera|neuer-accu-seek-rekorder-von-hivision-mehr-intelligenz-fuer-ihre-sicherheit|preiswerte-videoueberwachungstechnik|professionelle-videoueberwachung|profi-videoueberwachung|seetec-cayuga-software|smartphone-steuerung|ueberwachungskamera-installation-einbau|ueberwachungskamera-kameraueberwachung|wlan-mini-ueberwachungskamera-full-hd)(/(index\.html?)?)?$ /leistungen-videoueberwachung [R=301,L,NC]
+  # Einbruchmeldeanlagen (inkl. Alarmaufschaltung)
+  RewriteRule ^(alarmanlagen|alarmanlage|alarm-und-sicherheitstechnik|alarmanlage-lupus-xt3-bei-sicura-sicherheitstechnik|alarmtechnik-alarmanalgen|installation-alarmanlagen|einbruch-schutz-fuer-privat-und-gewerbe|alarm-monitoring|alarmaufschaltung|monitoring-preisliste)(/(index\.html?)?)?$ /leistungen-einbruchmeldeanlagen [R=301,L,NC]
+  # Service & Wartung
+  RewriteRule ^(dienstleitungen-und-service|sorglos-sicherheit-paket)(/(index\.html?)?)?$ /leistungen-service-wartung [R=301,L,NC]
+  # Leistungsübersicht
+  RewriteRule ^(sicherheitsloesungen|schutz-und-sicherheitstechnik|sicherheitstechnik-fuer-privat-und-gewerbe|eigenheim-schuetzen-durch-kameraueberwachung-und-alarmanlage|eigenheim-schuetzen-durch-videoueberwachung-alarmanlage)(/(index\.html?)?)?$ /leistungen [R=301,L,NC]
+  # Hersteller und Partner
+  RewriteRule ^(kooperationspartner|fachhandelspartner-im-bereich-videoueberwachung-alarmanlagen|axis|hikvision-bei-sicura-sicherheitstechnik|axis-mobotix-geutebrueck-abus-technik-vom-fachmann|sicherheitsloesungen/mobotix)(/(index\.html?)?)?$ /partner [R=301,L,NC]
+  # Kontakt
+  RewriteRule ^(kontaktformular|kontaktieren-sie-uns|beratung)(/(index\.html?)?)?$ /kontakt [R=301,L,NC]
+  # Blog → Ratgeber
+  RewriteRule ^(blog|news-updates|category/[^/]+|author/[^/]+)(/(index\.html?)?)?$ /ratgeber [R=301,L,NC]
+  # Ohne passendes Angebot → Startseite
+  RewriteRule ^(tag/[^/]+|2012-sicherheit-fuer-alle|2017-sicherheit-fuer-alle|allgemeine-geschaeftsbedingungen|aufspuehrgeraete|bewerten-sie-uns|bildrechte|cookie-richtlinie-eu|dienstleitungen-und-service/haustechnik-smarthome|gps-ortung|gps-ortungsgeraet-unsichtbares-bluetooth-headset-wanzen-wanzenfinder-sos-notrufmelder|karriere|kundeninformationen|lone-worker-schutz-einzelarbeitsplatz-schutz|modernste-ueberwachungstechnik-fuer-alle|muster-wiederrufsformular|netzwerk-sicherheitspruefung-sicherheit-check|nuetzliche-links|ortungsgeraete|praevention|schutz|secura|sicherheitsloesungen/gps|sicura-sicherheitstechnik|sicura-sicherheitstechnik-hochwertige-produkte-zu-guenstigen-preisen|stand-alone-technik-der-zukunft|technik-von-profis-fuer-profis|w-lan-technik|widerrufsbelehrung)(/(index\.html?)?)?$ / [R=301,L,NC]
+  # ---- Ende alte Website ----
 
   # ---- Schrägstrich am Ende entfernen (/impressum/ → /impressum) ----
   # Sonst lädt die Seite ohne Styles, weil relative Pfade (styles.css,
