@@ -36,12 +36,13 @@ ErrorDocument 403 /404.html
   RewriteRule ~$ - [F,L]
 
   # ---- Alte Leistungs-Adressen (/leistungen/xyz) dauerhaft umleiten ----
-  RewriteRule ^leistungen/(videoueberwachung|einbruchmeldeanlagen|service-wartung|verdeckte-videoueberwachung|kurzeinsaetze)/?$ /leistungen-$1 [R=301,L]
+  # Auch mit /index.html am Ende, so wie die alte Website verlinkt war.
+  RewriteRule ^leistungen/(videoueberwachung|einbruchmeldeanlagen|service-wartung|verdeckte-videoueberwachung|kurzeinsaetze)(/(index\.html?)?)?$ /leistungen-$1 [R=301,L]
 
   # ---- Adressen der alten Website dauerhaft umleiten ----
-  RewriteRule ^videoueberwachung/?$ /leistungen-videoueberwachung [R=301,L]
-  RewriteRule ^alarmanlagen/?$ /leistungen-einbruchmeldeanlagen [R=301,L]
-  RewriteRule ^kontaktformular/?$ /kontakt [R=301,L]
+  RewriteRule ^videoueberwachung(/(index\.html?)?)?$ /leistungen-videoueberwachung [R=301,L,NC]
+  RewriteRule ^alarmanlagen(/(index\.html?)?)?$ /leistungen-einbruchmeldeanlagen [R=301,L,NC]
+  RewriteRule ^kontaktformular(/(index\.html?)?)?$ /kontakt [R=301,L,NC]
 
   # ---- Schrägstrich am Ende entfernen (/impressum/ → /impressum) ----
   # Sonst lädt die Seite ohne Styles, weil relative Pfade (styles.css,
