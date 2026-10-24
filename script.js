@@ -37,6 +37,113 @@
     });
   }
 
+  /* ---- Eigener Scrollbalken: nur beim Scrollen oder am rechten Rand (nur Maus) ---- */
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var root = document.documentElement;
+    var bar = document.createElement('div');
+    var thumb = document.createElement('div');
+    bar.className = 'page-scrollbar';
+    bar.setAttribute('aria-hidden', 'true');
+    thumb.className = 'page-scrollbar__thumb';
+    bar.appendChild(thumb);
+    document.body.appendChild(bar);
+    root.classList.add('has-page-scrollbar');
+
+    var hideTimer;
+    var nearEdge = false;
+    var dragging = false;
+    var thumbHeight = 0;
+
+    var layoutThumb = function () {
+      var view = window.innerHeight;
+      var total = root.scrollHeight;
+      if (total <= view + 1) {
+        thumbHeight = 0;
+        thumb.style.height = '0';
+        return;
+      }
+      thumbHeight = Math.max(40, view * view / total);
+      var top = window.scrollY / (total - view) * (view - thumbHeight);
+      thumb.style.height = thumbHeight + 'px';
+      thumb.style.transform = 'translateY(' + top + 'px)';
+    };
+
+    var show = function () {
+      if (!thumbHeight) return;
+      clearTimeout(hideTimer);
+      bar.classList.add('is-visible');
+    };
+
+    var hideSoon = function () {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        if (!nearEdge && !dragging) bar.classList.remove('is-visible');
+      }, 1000);
+    };
+
+    var scrollToRatio = function (ratio) {
+      var max = root.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: Math.min(Math.max(ratio, 0), 1) * max, behavior: 'instant' });
+    };
+
+    layoutThumb();
+    window.addEventListener('resize', layoutThumb);
+    if ('ResizeObserver' in window) new ResizeObserver(layoutThumb).observe(document.body);
+
+    window.addEventListener('scroll', function () {
+      layoutThumb();
+      show();
+      hideSoon();
+    }, { passive: true });
+
+    document.addEventListener('mousemove', function (e) {
+      var wasNear = nearEdge;
+      nearEdge = window.innerWidth - e.clientX < 40;
+      if (nearEdge) show();
+      else if (wasNear) hideSoon();
+    }, { passive: true });
+
+    document.documentElement.addEventListener('mouseleave', function () {
+      nearEdge = false;
+      hideSoon();
+    });
+
+    // Daumen ziehen
+    var dragStartY = 0;
+    var dragStartScroll = 0;
+    thumb.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dragging = true;
+      dragStartY = e.clientY;
+      dragStartScroll = window.scrollY;
+      bar.classList.add('is-dragging');
+      thumb.setPointerCapture(e.pointerId);
+    });
+    thumb.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var view = window.innerHeight;
+      var max = root.scrollHeight - view;
+      var delta = (e.clientY - dragStartY) / (view - thumbHeight) * max;
+      scrollToRatio((dragStartScroll + delta) / max);
+    });
+    var endDrag = function () {
+      if (!dragging) return;
+      dragging = false;
+      bar.classList.remove('is-dragging');
+      hideSoon();
+    };
+    thumb.addEventListener('pointerup', endDrag);
+    thumb.addEventListener('pointercancel', endDrag);
+
+    // Klick auf die Leiste springt an die Stelle
+    bar.addEventListener('pointerdown', function (e) {
+      if (e.target !== bar) return;
+      e.preventDefault();
+      scrollToRatio((e.clientY - thumbHeight / 2) / (window.innerHeight - thumbHeight));
+    });
+  }
+
   /* ---- Transparenter Header über dem Video-Hero (nur Startseite) ---- */
   var header = document.querySelector('.site-header');
 

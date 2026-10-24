@@ -124,6 +124,50 @@ html {
   scroll-padding-top: 104px;
 }
 
+/* Eigener Seiten-Scrollbalken (nur Maus, aus script.js): Der native Balken
+   wird ausgeblendet, weil Chrome ihn nach einem Klassenwechsel nicht
+   zuverlässig neu zeichnet. Sichtbar nur beim Scrollen oder am rechten Rand. */
+html.has-page-scrollbar {
+  scrollbar-width: none;
+}
+
+html.has-page-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.page-scrollbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  width: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.page-scrollbar.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page-scrollbar__thumb {
+  position: absolute;
+  top: 0;
+  right: 3px;
+  width: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.35);
+  transition: width 0.15s ease, background-color 0.15s ease;
+}
+
+.page-scrollbar:hover .page-scrollbar__thumb,
+.page-scrollbar.is-dragging .page-scrollbar__thumb {
+  width: 8px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
 body {
   font-family: var(--font-sans);
   font-size: var(--fs-body);
