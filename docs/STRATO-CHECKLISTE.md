@@ -86,9 +86,7 @@ Fehlgeschlagener Mailversand: lokal getestet (Fehlermeldung mit Telefonnummer, P
 | `ratgeber-verdeckte-minikamera.jpg` | Ratgeber, verdeckte Überwachung, Videoüberwachung | KI-generiert | „KI-generiertes Symbolbild“ |
 | `ratgeber-videoueberwachung-aussenkamera.jpg` | Ratgeber | KI-generiert | „KI-generiertes Symbolbild“ |
 | `ratgeber-hero-hintergrund.jpg` | Ratgeber-Kopfbereich | KI-generiert | „KI-generiertes Symbolbild“ |
-| `referenz-klinik.jpg` | Referenzen „Krankenhäuser“ | KI-generiert | „KI-generiertes Symbolbild“ |
 | `referenz-arztpraxen.jpg` | Referenzen, Startseite | echtes Foto, stark weichgezeichnet | keine (Freigabe Kunde prüfen) |
-| `referenz-fussballverein.jpg` | Referenzen | echtes Foto, stark weichgezeichnet | keine (Freigabe Kunde prüfen) |
 | `leistungen-service-wartung-montage.jpg` | Kachel „Service und Wartung“ | laut Historie „eigenes Montagefoto“ – **bestätigen** | offen |
 | `angela-foggia.webp`, `angela-foggia-klein.webp` | Über uns, Startseite, Kontakt | echtes Foto (WhatsApp-Bild vom 12.10.2026), zugeschnitten; alte Telefonnummer auf dem Banner weichgezeichnet | – |
 | `captcha/bild.jpg` | Puzzle-Hintergrund | **Herkunft klären** | – |
