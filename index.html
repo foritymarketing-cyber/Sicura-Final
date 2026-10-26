@@ -10,7 +10,7 @@
   <link rel="icon" href="assets/Medien/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="assets/Medien/favicon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="assets/Medien/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261024b">
+  <link rel="stylesheet" href="styles.css?v=20261026">
 </head>
 <body class="has-video-hero">
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -34,7 +34,7 @@
         </ul>
       </nav>
 
-      <a class="btn btn-primary nav-cta" href="/kontakt">Kostenlos beraten lassen</a>
+      <a class="btn btn-primary nav-cta" href="/kontakt" data-inhalt="beratung-knopf">Kostenlos beraten lassen</a>
 
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-desktop" aria-label="Menü öffnen">
         <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-menu"></use></svg>
@@ -62,10 +62,7 @@
         <div class="hero-content">
           <h1>Ihr Partner für Sicherheitstechnik</h1>
           <div class="hero-bottom">
-            <p class="lede">Seit 2010 planen, installieren und betreuen wir Videoüberwachung und Alarmanlagen für Privatkunden, Unternehmen und öffentliche Einrichtungen in Rheinhessen und im Rhein-Main-Gebiet. Sie erhalten eine auf Ihr Objekt abgestimmte Anlage, eine verständliche Einweisung und feste Ansprechpartner, selbstverständlich auch nach der Installation.</p>
-            <div class="hero-actions">
-              <a class="btn btn-primary btn-lg" href="/kontakt">Kostenlos beraten lassen</a>
-            </div>
+            <p class="lede">Seit 2010 planen, installieren und betreuen wir Videoüberwachung und Alarmanlagen für Privatkunden, Unternehmen und öffentliche Einrichtungen in Rheinhessen und im Rhein-Main-Gebiet.</p>
           </div>
         </div>
       </div>
@@ -75,9 +72,7 @@
     <section class="section section--alt">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Leistungen</p>
-          <p class="section-tagline">Ihre Sicherheit – unser Anliegen</p>
-          <h2>So schützen wir Ihr Zuhause und Ihr Unternehmen</h2>
+          <h2>Leistungen</h2>
         </div>
 
         <div class="card-grid" data-reveal-group>
@@ -101,7 +96,7 @@
             </div>
             <div class="card-body">
               <h3>Service und Wartung</h3>
-              <p>Auch nach der Installation sind wir für Sie da. Wir kümmern uns um die Wartung, Reparatur und Erweiterung Ihrer bei uns installierten Sicherheitstechnik.</p>
+              <p data-inhalt="service-karte">Auch nach der Installation sind wir für Sie da. Wir übernehmen Wartung, Reparatur und Erweiterung der Sicherheitstechnik, die wir bei Ihnen installiert haben.</p>
               <span class="card-link">Mehr zu Service und Wartung <svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-arrow-right"></use></svg></span>
             </div>
           </a>
@@ -127,8 +122,7 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Warum wir</p>
-          <h2>Was Sie von uns erwarten können</h2>
+          <h2>Persönlich, individuell und zuverlässig</h2>
         </div>
 
         <div class="benefits" data-reveal-group>
@@ -136,7 +130,7 @@
             <div class="benefit-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-users"></use></svg></div>
             <div>
               <h3>Feste Ansprechpartner</h3>
-              <p>Wir begleiten Sie persönlich – von der ersten Beratung über die Installation bis zur laufenden Betreuung. Mit Ansprechpartnern, die Ihr Objekt und Ihre Anlage kennen.</p>
+              <p>Wir begleiten Sie persönlich: von der ersten Beratung über die Installation bis zur laufenden Betreuung. Mit Ansprechpartnern, die Ihr Objekt und Ihre Anlage kennen.</p>
             </div>
           </div>
 
@@ -220,23 +214,19 @@
     <!-- Solution-Overview: große Cards zu den Lösungswegen -->
     <section class="section">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Ihr Weg zu uns</p>
-        </div>
-
         <div class="solution-grid" data-reveal-group>
           <a class="solution-card solution-card--photo" href="/leistungen" style="--solution-photo:url('assets/Medien/solution-kamera-fassade.png')" data-reveal>
             <span class="ki-label">KI-generiert</span>
             <p class="solution-index">Für Privat &amp; Gewerbe</p>
             <h3>Passende Lösung finden</h3>
-            <p>Videoüberwachung, Einbruchmeldeanlagen oder beides kombiniert – wir zeigen Ihnen, was zu Ihrem Objekt passt.</p>
+            <p>Videoüberwachung, Einbruchmeldeanlagen oder beides kombiniert: Wir zeigen Ihnen, was zu Ihrem Objekt passt.</p>
             <span class="card-link">Leistungen ansehen <svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-arrow-right"></use></svg></span>
           </a>
 
           <a class="solution-card solution-card--photo" href="/referenzen" style="--solution-photo:url('assets/Medien/referenz-arztpraxen.jpg')" data-reveal>
-            <p class="solution-index">Aus der Praxis</p>
-            <h3>Referenzen ansehen</h3>
-            <p>Erfahrung aus unterschiedlichen Branchen – individuell geplant und diskret betreut. Erfahren Sie, für welche Einsatzbereiche wir Sicherheitstechnik anbieten.</p>
+            <p class="solution-index">Unsere Kundenprojekte</p>
+            <h3 data-inhalt="referenzen-uebersicht-knopf">Referenzen ansehen</h3>
+            <p>Entdecken Sie ausgewählte Projekte, die wir für unsere Kunden umgesetzt haben: von der Ausgangssituation über die installierte Sicherheitslösung bis zum konkreten Nutzen. Zum Schutz unserer Kunden stellen wir alle Projekte anonymisiert vor.</p>
             <span class="card-link">Zu den Referenzen <svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-arrow-right"></use></svg></span>
           </a>
 
@@ -244,7 +234,7 @@
             <span class="ki-label">KI-generiert</span>
             <p class="solution-index">Wissen</p>
             <h3>Ratgeber lesen</h3>
-            <p>Videoüberwachung, Alarmanlage oder Technik auf Zeit – verständlich erklärt, damit Sie gut informiert entscheiden.</p>
+            <p>Videoüberwachung, Alarmanlage oder Technik auf Zeit: verständlich erklärt, damit Sie gut informiert entscheiden.</p>
             <span class="card-link">Zum Ratgeber <svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-arrow-right"></use></svg></span>
           </a>
 
@@ -265,13 +255,12 @@
         <div class="section-head center">
           <p class="eyebrow">Was Kunden sagen</p>
           <h2>Bewertungen</h2>
-          <p class="rating-intro">Das Vertrauen unserer Kunden ist unsere beste Empfehlung. Über den folgenden Link erfahren Sie, wie unsere Kunden die Zusammenarbeit mit uns erleben.</p>
+          <p class="rating-intro" data-inhalt="bewertungen-text">Das Vertrauen unserer Kunden ist unsere beste Empfehlung. Über den folgenden Link erfahren Sie, wie unsere Kunden die Zusammenarbeit mit uns erleben. Wir freuen uns über Ihre ehrliche Bewertung und Ihre Erfahrungen mit Sicura.</p>
         </div>
         <div class="rating-actions">
           <a class="btn btn-primary" href="https://www.google.com/maps?cid=5536893670046056201" target="_blank" rel="noopener noreferrer">Zum Google-Profil</a>
           <a class="btn btn-primary" href="https://g.page/r/CQk_NAp1_9ZMEBM/review" target="_blank" rel="noopener noreferrer">Bewertung schreiben</a>
         </div>
-        <p class="rating-outro">Wir freuen uns über Ihre ehrliche Bewertung und Ihre Erfahrungen mit Sicura.</p>
       </div>
     </section>
 
@@ -279,9 +268,8 @@
     <section class="section trust">
       <div class="container">
         <div class="section-head center">
-          <p class="eyebrow">Systeme</p>
           <h2>Auf bewährte Systeme spezialisiert</h2>
-          <p class="lede" style="margin-top:var(--space-4)">Unser Schwerpunkt liegt auf den folgenden Herstellern. Wir beraten Sie gerne persönlich, installieren fachgerecht und betreuen Ihre Anlage langfristig.</p>
+          <p class="lede" style="margin-top:var(--space-4)" data-inhalt="hersteller-text">Wir arbeiten mit bewährten Sicherheitssystemen verschiedener Hersteller. Welche Technik wir empfehlen, richtet sich nach Ihrem Bedarf. Wir erklären die Unterschiede, installieren fachgerecht und betreuen Ihre Anlage auch nach der Inbetriebnahme.</p>
         </div>
         <div class="partner-marquee" data-reveal>
           <ul class="partner-logos">
@@ -312,9 +300,8 @@
           </figure>
           <div class="owner-teaser-body">
             <p class="eyebrow">Persönlich für Sie da</p>
-            <h2>Ein Gesicht hinter Sicura</h2>
-            <p class="lede">Sicura ist inhabergeführt: Bei Angela Foggia laufen Ihre Anfragen und Angebote zusammen – und sie bleibt auch nach der Installation Ihre persönliche Ansprechpartnerin.</p>
-            <p class="owner-teaser-caption"><strong>Angela Foggia – Inhaberin</strong><br>Ihre Ansprechpartnerin für Anfragen, Angebote und die persönliche Betreuung.</p>
+            <h2 data-inhalt="inhaberin-name">Angela Foggia, Inhaberin</h2>
+            <p class="lede" data-inhalt="inhaberin-text">Ihre Ansprechpartnerin für Anfragen, Angebote und die persönliche Betreuung.</p>
             <a class="card-link" href="/ueber-uns">Mehr über uns <svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-arrow-right"></use></svg></a>
           </div>
         </div>
@@ -325,9 +312,9 @@
     <section class="section section--alt">
       <div class="container">
         <div class="cta-banner" data-reveal>
-          <h2>Reden wir über Ihr Objekt</h2>
-          <p>Telefonische Erstberatung und Angebotserstellung sind kostenlos. Mögliche Kosten für einen Vor-Ort-Termin vereinbaren wir vorher mit Ihnen. Rufen Sie an unter <a class="phone" href="tel:+4962499379999">06249 937 9999</a> – oder schreiben Sie uns, wir melden uns zurück.</p>
-          <a class="btn btn-primary btn-lg" href="/kontakt">Anfrage schreiben</a>
+          <h2 data-inhalt="beratung-titel">Persönliche Beratung</h2>
+          <p data-inhalt="beratung-text">Wir beraten Sie telefonisch zu passenden Sicherheitslösungen und erstellen ein kostenloses, unverbindliches Angebot. Über mögliche Kosten einer Vor-Ort-Besichtigung informieren wir Sie im Voraus.</p>
+          <a class="btn btn-primary btn-lg" href="/kontakt" data-inhalt="beratung-knopf">Kostenlos beraten lassen</a>
         </div>
       </div>
     </section>
@@ -380,13 +367,13 @@
 
       <div class="footer-bottom">
         <p>&copy; <span data-current-year></span> Sicura Sicherheitstechnik, Angela Foggia. Alle Rechte vorbehalten.</p>
-        <p>Rheinhessen und Rhein-Main-Gebiet – rund 100 km um Dalheim</p>
+        <p>Rheinhessen und Rhein-Main-Gebiet, rund 100 km um Dalheim</p>
       </div>
     </div>
   </footer>
 
   <script src="assets/js/vendor/motion.min.js" defer></script>
   <script src="motion-effects.js" defer></script>
-  <script src="script.js?v=20261024b"></script>
+  <script src="script.js?v=20261026"></script>
 </body>
 </html>

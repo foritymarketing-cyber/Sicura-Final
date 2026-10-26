@@ -644,7 +644,7 @@
       function fail() {
         busy = true;
         root.classList.add('is-failed');
-        status.textContent = 'Nicht ganz – bitte mit dem neuen Puzzle noch einmal versuchen.';
+        status.textContent = 'Nicht ganz. Bitte mit dem neuen Puzzle noch einmal versuchen.';
         window.setTimeout(newPuzzle, 700);
       }
 
@@ -667,7 +667,7 @@
             root.classList.add('is-solved');
             handle.setAttribute('aria-disabled', 'true');
             handle.setAttribute('aria-valuetext', 'Gelöst');
-            status.textContent = 'Geprüft – danke!';
+            status.textContent = 'Geprüft, danke!';
             setFieldError(input, '');
           })
           .catch(fail);

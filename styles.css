@@ -759,16 +759,16 @@ body.has-video-hero .site-header:not(.is-scrolled)::before {
 .hero-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--space-6);
   width: 100%;
   max-width: 960px;
   margin-inline: auto;
-  text-align: left;
+  text-align: center;
 }
 
 .hero-bottom .lede {
-  max-width: 48ch;
+  max-width: 60ch;
   margin: 0;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
@@ -2913,7 +2913,9 @@ a.card {
 
 @media (max-width: 900px) {
   .contact-grid {
-    grid-template-columns: 1fr;
+    /* minmax(0, …): sonst macht die Mindestbreite des Inhalts die Spalte
+       auf schmalen Handys breiter als den Bildschirm */
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

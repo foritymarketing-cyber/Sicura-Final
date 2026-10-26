@@ -10,6 +10,8 @@ Stand: 12.10.2026. Dieses Dokument wird **nicht** hochgeladen (per `.htaccess` z
 cd tools/build && npm install && npm run build
 ```
 
+Vor dem Minifizieren gleicht der Build die mehrfach verwendeten Texte (Beratungsbereiche, Inhaberin, Herstellertext, einzelne FAQ-Antworten, Laufband der Referenzen, FAQ-Daten) aus `tools/content/inhalte.mjs` in die Seiten ab und prüft auf Gedankenstriche. Diese Texte werden nur dort geändert; `npm run inhalte` überträgt sie ohne Build in die Seiten, `npm run pruefen` prüft nur.
+
 Lokal prüfen lässt sich die Upload-Version über die Preview-Konfiguration `sicura-dist` (Port 4324). Dabei entstehen in `dist/api/_intern/data/` Laufzeitdateien – vor dem Upload deshalb den Build erneut ausführen. Hinweis: HTML, CSS und JavaScript muss jeder Browser laden, minifizierter Code lässt sich also weiterhin ansehen, nur deutlich schwerer nachvollziehen.
 
 Ohne Build-Schritt gilt (Inhalt des Projektordners):

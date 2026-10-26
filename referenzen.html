@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Referenzen – Erfahrung aus unterschiedlichen Branchen | Sicura</title>
-  <meta name="description" content="Erfahrung aus unterschiedlichen Branchen – individuell geplant und diskret betreut. Erfahren Sie, für welche Einsatzbereiche wir Sicherheitstechnik anbieten.">
+  <title>Referenzen: Erfahrung aus unterschiedlichen Branchen | Sicura</title>
+  <meta name="description" content="Erfahrung aus unterschiedlichen Branchen, individuell geplant und diskret betreut. Erfahren Sie, für welche Einsatzbereiche wir Sicherheitstechnik anbieten.">
   <link rel="canonical" href="https://www.sicura-sicherheitstechnik.de/referenzen">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="assets/Medien/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="assets/Medien/favicon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="assets/Medien/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261024b">
+  <link rel="stylesheet" href="styles.css?v=20261026">
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -34,7 +34,7 @@
         </ul>
       </nav>
 
-      <a class="btn btn-primary nav-cta" href="/kontakt">Kostenlos beraten lassen</a>
+      <a class="btn btn-primary nav-cta" href="/kontakt" data-inhalt="beratung-knopf">Kostenlos beraten lassen</a>
 
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-desktop" aria-label="Menü öffnen">
         <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/Medien/icons.svg#icon-menu"></use></svg>
@@ -48,7 +48,7 @@
       <div class="container">
         <p class="eyebrow">Referenzen</p>
         <h1>Vertrauen, das diskret bleibt</h1>
-        <p class="lede">Wir betreuen Kunden aus unterschiedlichen Branchen – darunter auch Betreiber kritischer Infrastrukturen (KRITIS). Diskretion gehört zu unserem Sicherheitsverständnis: Deshalb veröffentlichen wir keine Kundennamen oder identifizierbaren Projektangaben.</p>
+        <p class="lede">Wir betreuen Kunden aus unterschiedlichen Branchen, darunter auch Betreiber kritischer Infrastrukturen (KRITIS). Diskretion gehört zu unserem Sicherheitsverständnis: Deshalb veröffentlichen wir keine Kundennamen oder identifizierbaren Projektangaben.</p>
       </div>
     </section>
 
@@ -56,12 +56,12 @@
       <div class="container container--wide">
         <div class="section-head center" data-reveal>
           <h2>Sicherheit für anspruchsvolle Kunden</h2>
-          <p>Ein Einblick in die Branchen und Kundenbereiche, die wir betreuen. Die Branchenbilder sind KI-generierte Symbolbilder und zeigen keine tatsächlichen Kundenobjekte.</p>
         </div>
         <div class="sector-marquee" data-marquee>
-          <!-- Reihe 1: läuft von links nach rechts; Karten wiederholt (für Screenreader ausgeblendet), damit die Schleife auch auf breiten Bildschirmen lückenlos ist -->
+          <!-- Eine Reihe mit allen Kundenkategorien, läuft von links nach rechts. Erzeugt aus tools/content/inhalte.mjs (npm run inhalte): erste Hälfte für Screenreader, zweite Hälfte als ausgeblendete Kopie für die nahtlose Endlosschleife. -->
           <div class="sector-row" data-direction="right">
             <ul class="sector-track">
+<!-- inhalt:referenzen-laufband -->
               <li class="sector-card" data-project="klinik">
                 <div class="sector-card-media">
                   <img src="assets/Medien/branche-klinik.jpg" alt="Beleuchteter Eingangsbereich eines Klinikgebäudes am Abend (KI-generiertes Symbolbild)" loading="lazy" width="960" height="640" draggable="false">
@@ -70,7 +70,7 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Krankenhäuser und Kliniken</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Krankenhäuser und Kliniken">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Krankenhäuser und Kliniken">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
               <li class="sector-card" data-project="praxen">
@@ -81,7 +81,7 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Ärzte und Praxen</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Ärzte und Praxen">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Ärzte und Praxen">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
               <li class="sector-card" data-project="waschstrasse">
@@ -92,113 +92,9 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Waschstraßen und Fahrzeugpflege</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Waschstraßen und Fahrzeugpflege">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Waschstraßen und Fahrzeugpflege">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
-              <li class="sector-card" data-project="klinik" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-klinik.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Krankenhäuser und Kliniken</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="praxen" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-praxen.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Ärzte und Praxen</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="waschstrasse" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-waschstrasse.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Waschstraßen und Fahrzeugpflege</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="klinik" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-klinik.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Krankenhäuser und Kliniken</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="praxen" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-praxen.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Ärzte und Praxen</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="waschstrasse" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-waschstrasse.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Waschstraßen und Fahrzeugpflege</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="klinik" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-klinik.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Krankenhäuser und Kliniken</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="praxen" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-praxen.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Ärzte und Praxen</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="waschstrasse" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-waschstrasse.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Waschstraßen und Fahrzeugpflege</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <!-- Reihe 2: läuft von rechts nach links; Karten wiederholt (für Screenreader ausgeblendet), damit die Schleife auch auf breiten Bildschirmen lückenlos ist -->
-          <div class="sector-row" data-direction="left">
-            <ul class="sector-track">
               <li class="sector-card" data-project="schiesssport">
                 <div class="sector-card-media">
                   <img src="assets/Medien/branche-schiesssport.jpg" alt="Schießstand mit Zielscheiben in einer Halle (KI-generiertes Symbolbild)" loading="lazy" width="960" height="640" draggable="false">
@@ -207,7 +103,7 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Schießsportvereine</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Schießsportvereine">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Schießsportvereine">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
               <li class="sector-card" data-project="fussball">
@@ -218,7 +114,7 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Fußballvereine</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Fußballvereine">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Fußballvereine">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
               <li class="sector-card" data-project="entsorgung">
@@ -229,113 +125,9 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Entsorgung und Metallrecycling</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Entsorgung und Metallrecycling">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Entsorgung und Metallrecycling">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
-              <li class="sector-card" data-project="schiesssport" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-schiesssport.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Schießsportvereine</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="fussball" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-fussball.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Fußballvereine</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="entsorgung" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-entsorgung.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Entsorgung und Metallrecycling</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="schiesssport" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-schiesssport.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Schießsportvereine</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="fussball" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-fussball.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Fußballvereine</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="entsorgung" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-entsorgung.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Entsorgung und Metallrecycling</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="schiesssport" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-schiesssport.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Schießsportvereine</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="fussball" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-fussball.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Fußballvereine</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="entsorgung" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-entsorgung.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Entsorgung und Metallrecycling</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <!-- Reihe 3: läuft von links nach rechts; Karten wiederholt (für Screenreader ausgeblendet), damit die Schleife auch auf breiten Bildschirmen lückenlos ist -->
-          <div class="sector-row" data-direction="right">
-            <ul class="sector-track">
               <li class="sector-card" data-project="privatkunden">
                 <div class="sector-card-media">
                   <img src="assets/Medien/branche-privatkunden.jpg" alt="Modernes Einfamilienhaus mit beleuchteter Fassade am Abend (KI-generiertes Symbolbild)" loading="lazy" width="960" height="640" draggable="false">
@@ -344,7 +136,7 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Privatkunden</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Privatkunden">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Privatkunden">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
               <li class="sector-card" data-project="kfz">
@@ -355,7 +147,7 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Kfz-Werkstätten und Lackierereien</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Kfz-Werkstätten und Lackierereien">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Kfz-Werkstätten und Lackierereien">Anonymisiertes Kundenprojekt ansehen</button>
                 </div>
               </li>
               <li class="sector-card" data-project="lebensmittel">
@@ -366,7 +158,73 @@
                 <div class="sector-card-body">
                   <h3 class="sector-card-title">Lebensmittelgroßhandel</h3>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Projekt ansehen: Lebensmittelgroßhandel">Projekt ansehen</button>
+                  <button type="button" class="sector-card-more" aria-haspopup="dialog" aria-controls="project-dialog" aria-label="Anonymisiertes Kundenprojekt ansehen: Lebensmittelgroßhandel">Anonymisiertes Kundenprojekt ansehen</button>
+                </div>
+              </li>
+              <li class="sector-card" data-project="klinik" aria-hidden="true">
+                <div class="sector-card-media">
+                  <img src="assets/Medien/branche-klinik.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
+                  <span class="ki-label">KI-generiert</span>
+                </div>
+                <div class="sector-card-body">
+                  <p class="sector-card-title">Krankenhäuser und Kliniken</p>
+                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
+                </div>
+              </li>
+              <li class="sector-card" data-project="praxen" aria-hidden="true">
+                <div class="sector-card-media">
+                  <img src="assets/Medien/branche-praxen.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
+                  <span class="ki-label">KI-generiert</span>
+                </div>
+                <div class="sector-card-body">
+                  <p class="sector-card-title">Ärzte und Praxen</p>
+                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
+                </div>
+              </li>
+              <li class="sector-card" data-project="waschstrasse" aria-hidden="true">
+                <div class="sector-card-media">
+                  <img src="assets/Medien/branche-waschstrasse.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
+                  <span class="ki-label">KI-generiert</span>
+                </div>
+                <div class="sector-card-body">
+                  <p class="sector-card-title">Waschstraßen und Fahrzeugpflege</p>
+                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
+                </div>
+              </li>
+              <li class="sector-card" data-project="schiesssport" aria-hidden="true">
+                <div class="sector-card-media">
+                  <img src="assets/Medien/branche-schiesssport.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
+                  <span class="ki-label">KI-generiert</span>
+                </div>
+                <div class="sector-card-body">
+                  <p class="sector-card-title">Schießsportvereine</p>
+                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
+                </div>
+              </li>
+              <li class="sector-card" data-project="fussball" aria-hidden="true">
+                <div class="sector-card-media">
+                  <img src="assets/Medien/branche-fussball.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
+                  <span class="ki-label">KI-generiert</span>
+                </div>
+                <div class="sector-card-body">
+                  <p class="sector-card-title">Fußballvereine</p>
+                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
+                </div>
+              </li>
+              <li class="sector-card" data-project="entsorgung" aria-hidden="true">
+                <div class="sector-card-media">
+                  <img src="assets/Medien/branche-entsorgung.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
+                  <span class="ki-label">KI-generiert</span>
+                </div>
+                <div class="sector-card-body">
+                  <p class="sector-card-title">Entsorgung und Metallrecycling</p>
+                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
                 </div>
               </li>
               <li class="sector-card" data-project="privatkunden" aria-hidden="true">
@@ -377,7 +235,7 @@
                 <div class="sector-card-body">
                   <p class="sector-card-title">Privatkunden</p>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
                 </div>
               </li>
               <li class="sector-card" data-project="kfz" aria-hidden="true">
@@ -388,7 +246,7 @@
                 <div class="sector-card-body">
                   <p class="sector-card-title">Kfz-Werkstätten und Lackierereien</p>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
                 </div>
               </li>
               <li class="sector-card" data-project="lebensmittel" aria-hidden="true">
@@ -399,75 +257,10 @@
                 <div class="sector-card-body">
                   <p class="sector-card-title">Lebensmittelgroßhandel</p>
                   <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
+                  <span class="sector-card-more">Anonymisiertes Kundenprojekt ansehen</span>
                 </div>
               </li>
-              <li class="sector-card" data-project="privatkunden" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-privatkunden.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Privatkunden</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="kfz" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-kfz-werkstatt.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Kfz-Werkstätten und Lackierereien</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="lebensmittel" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-lebensmittelhandel.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Lebensmittelgroßhandel</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="privatkunden" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-privatkunden.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Privatkunden</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="kfz" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-kfz-werkstatt.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Kfz-Werkstätten und Lackierereien</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung und Alarmtechnik</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
-              <li class="sector-card" data-project="lebensmittel" aria-hidden="true">
-                <div class="sector-card-media">
-                  <img src="assets/Medien/branche-lebensmittelhandel.jpg" alt="" loading="lazy" width="960" height="640" draggable="false">
-                  <span class="ki-label">KI-generiert</span>
-                </div>
-                <div class="sector-card-body">
-                  <p class="sector-card-title">Lebensmittelgroßhandel</p>
-                  <p class="sector-card-tech">Eingesetzte Technik:<br>Videoüberwachung</p>
-                  <span class="sector-card-more">Projekt ansehen</span>
-                </div>
-              </li>
+<!-- /inhalt:referenzen-laufband -->
             </ul>
           </div>
         </div>
@@ -480,22 +273,21 @@
         <div class="section-head center">
           <p class="eyebrow">Was Kunden sagen</p>
           <h2>Bewertungen</h2>
-          <p class="rating-intro">Das Vertrauen unserer Kunden ist unsere beste Empfehlung. Über den folgenden Link erfahren Sie, wie unsere Kunden die Zusammenarbeit mit uns erleben.</p>
+          <p class="rating-intro" data-inhalt="bewertungen-text">Das Vertrauen unserer Kunden ist unsere beste Empfehlung. Über den folgenden Link erfahren Sie, wie unsere Kunden die Zusammenarbeit mit uns erleben. Wir freuen uns über Ihre ehrliche Bewertung und Ihre Erfahrungen mit Sicura.</p>
         </div>
         <div class="rating-actions">
           <a class="btn btn-primary" href="https://www.google.com/maps?cid=5536893670046056201" target="_blank" rel="noopener noreferrer">Zum Google-Profil</a>
           <a class="btn btn-primary" href="https://g.page/r/CQk_NAp1_9ZMEBM/review" target="_blank" rel="noopener noreferrer">Bewertung schreiben</a>
         </div>
-        <p class="rating-outro">Wir freuen uns über Ihre ehrliche Bewertung und Ihre Erfahrungen mit Sicura.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
         <div class="cta-banner" data-reveal>
-          <h2>Über Ihr Objekt sprechen</h2>
-          <p>Telefonische Erstberatung und Angebotserstellung sind kostenlos. Mögliche Kosten für einen Vor-Ort-Termin vereinbaren wir vorher mit Ihnen.</p>
-          <a class="btn btn-primary btn-lg" href="/kontakt">Anfrage schreiben</a>
+          <h2 data-inhalt="beratung-titel">Persönliche Beratung</h2>
+          <p data-inhalt="beratung-text">Wir beraten Sie telefonisch zu passenden Sicherheitslösungen und erstellen ein kostenloses, unverbindliches Angebot. Über mögliche Kosten einer Vor-Ort-Besichtigung informieren wir Sie im Voraus.</p>
+          <a class="btn btn-primary btn-lg" href="/kontakt" data-inhalt="beratung-knopf">Kostenlos beraten lassen</a>
         </div>
       </div>
     </section>
@@ -538,7 +330,7 @@
         <div class="project-featured-body">
           <p class="project-tag">Videoüberwachung + Alarmtechnik</p>
           <h2 id="projekt-praxen-titel">Ärzte und Praxen</h2>
-          <p class="project-teaser">Die Praxis verlassen – und die Sicherheit im Blick behalten.</p>
+          <p class="project-teaser">Die Praxis verlassen und die Sicherheit im Blick behalten.</p>
           <div class="project-cols">
             <div class="project-col">
               <h3 class="project-label">Ausgangslage</h3>
@@ -663,7 +455,7 @@
         <div class="project-featured-body">
           <p class="project-tag">Videoüberwachung + Alarmtechnik</p>
           <h2 id="projekt-privatkunden-titel">Privatkunden</h2>
-          <p class="project-teaser">Das Zuhause absichern – auch während der Abwesenheit.</p>
+          <p class="project-teaser">Das Zuhause absichern, auch während der Abwesenheit.</p>
           <div class="project-cols">
             <div class="project-col">
               <h3 class="project-label">Ausgangslage</h3>
@@ -780,13 +572,13 @@
 
       <div class="footer-bottom">
         <p>&copy; <span data-current-year></span> Sicura Sicherheitstechnik, Angela Foggia. Alle Rechte vorbehalten.</p>
-        <p>Rheinhessen und Rhein-Main-Gebiet – rund 100 km um Dalheim</p>
+        <p>Rheinhessen und Rhein-Main-Gebiet, rund 100 km um Dalheim</p>
       </div>
     </div>
   </footer>
 
   <script src="assets/js/vendor/motion.min.js" defer></script>
   <script src="motion-effects.js" defer></script>
-  <script src="script.js?v=20261024b"></script>
+  <script src="script.js?v=20261026"></script>
 </body>
 </html>

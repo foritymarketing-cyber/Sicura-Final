@@ -6,7 +6,8 @@
 //   die in HTML/CSS/JS/PHP tatsächlich referenziert werden – Rohfotos
 //   und unverpixelte Originale bleiben damit automatisch draußen.
 // Aufruf:  cd tools/build && npm install && npm run build
-// Die Quelldateien im Projektordner bleiben unverändert.
+// (gleicht vorher die zentralen Texte aus tools/content/inhalte.mjs ab)
+// build.mjs selbst verändert die Quelldateien im Projektordner nicht.
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';

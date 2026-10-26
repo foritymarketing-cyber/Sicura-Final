@@ -4,7 +4,9 @@
   "description": "Erzeugt die minifizierte Upload-Version der Website in dist/",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs"
+    "inhalte": "node ../content/sync.mjs",
+    "pruefen": "node ../content/sync.mjs --pruefen",
+    "build": "node ../content/sync.mjs && node build.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.2",
